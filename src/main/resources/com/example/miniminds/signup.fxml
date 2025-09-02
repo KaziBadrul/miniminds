@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.control.Button?>
+
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.PasswordField?>
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.example.miniminds.SignupController"
+      alignment="CENTER"
+      spacing="20"
+      prefWidth="1280"
+      prefHeight="720"
+      style="-fx-background-color: #28a745;">
+
+    <Text text="Signup Page" style="-fx-font-size: 32px;" />
+
+    <TextField fx:id="nameField" promptText="Name" prefWidth="300"/>
+    <TextField fx:id="ageField" promptText="Age" prefWidth="300"/>
+    <TextField fx:id="emailField" promptText="Email" prefWidth="300"/>
+    <PasswordField fx:id="passwordField" promptText="Password" prefWidth="300"/>
+    <Text fx:id="categoryCue" text="" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+<!--    <ComboBox fx:id="categoryBox" prefWidth="300"/>-->
+
+    <Button text="Signup"
+            onAction="#handleSignup"
+            prefWidth="150"
+            style="-fx-background-color: #ffa500; -fx-text-fill: white; -fx-font-size: 16px; -fx-background-radius: 20;" />
+
+
+    <Button text="Back"
+            onAction="#handleBack"
+            prefWidth="150"
+            style="-fx-background-color: #111111; -fx-text-fill: white; -fx-font-size: 16px; -fx-background-radius: 20;" />
+
+</VBox>
