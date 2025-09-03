@@ -20,6 +20,18 @@ public class MainController {
     private void showDashboard() {
         contentArea.getChildren().clear();
         contentArea.getChildren().add(new Text("Dashboard content goes here."));
+        // Games Overview
+        // Math Game
+        // Letter to Image Game
+        // Memory Card Game
+        // Odd One Out Game
+        // Mini Quizzes
+        // Pop the Balloon Game
+        // Timed Challenges
+
+        // Other Features
+        // Progress Tracking
+        // Rewards System
     }
 
     @FXML
