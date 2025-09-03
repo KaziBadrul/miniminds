@@ -1,0 +1,55 @@
+/* Game buttons */
+.game-button {
+    -fx-background-color: #1899D6;
+    -fx-text-fill: white;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-font-family: "DIN Round", sans-serif;
+    -fx-alignment: center;
+    -fx-padding: 13px 16px;
+    -fx-background-radius: 16px;
+    -fx-border-radius: 16px;
+    -fx-border-width: 0 0 4 0;
+    -fx-border-color: transparent;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 2, 0.5, 0, 2);
+    -fx-pref-width: 150px;
+}
+
+.game-button:hover:enabled {
+    -fx-background-color: #1CB0F6;
+}
+
+.game-button:pressed {
+    -fx-border-width: 4 0 0 0;
+    -fx-background-color: #1273A0;
+}
+
+.game-button:disabled {
+    -fx-opacity: 0.6;
+    -fx-cursor: default;
+}
+
+/* Feedback Label */
+.feedback-box {
+    -fx-background-color: white;       /* optional background */
+    -fx-background-radius: 10px;       /* rounded corners */
+    -fx-border-color: white;            /* border color */
+    -fx-border-width: 2px;
+    -fx-border-radius: 10px;           /* match background-radius */
+    -fx-padding: 5px 10px;             /* spacing inside */
+}
+
+
+/* Question text */
+.game-text-bold {
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-fill: white;
+}
+
+/* Normal text (score, remaining) */
+.game-text-normal {
+    -fx-font-size: 18px;
+    -fx-fill: white;
+}

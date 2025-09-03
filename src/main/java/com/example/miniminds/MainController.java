@@ -100,9 +100,18 @@ public class MainController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
             VBox gameRoot = loader.load();
 
+            // Loading email
+            MathQuizController controller = loader.getController();
+            controller.setCurrentUserEmail(Session.getCurrentUserEmail());
+
+            // Scene with CSS
+            Scene gameScene = new Scene(gameRoot, width, height);
+            gameScene.getStylesheets().add(getClass().getResource("styleGames.css").toExternalForm());
+
+            // Create Stage and show
             Stage gameStage = new Stage();
             gameStage.setTitle("MiniMinds - " + title);
-            gameStage.setScene(new Scene(gameRoot, width, height));
+            gameStage.setScene(gameScene);
             gameStage.show();
 
         } catch (IOException e) {

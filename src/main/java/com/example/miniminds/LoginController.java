@@ -32,6 +32,8 @@ public class LoginController {
         String hashedPassword = hashPassword(password);
 
         if (DatabaseHelper.validateUser(email, hashedPassword)) {
+            Session.setCurrentUserEmail(email);
+
             FXMLLoader loader = new FXMLLoader(getClass().getResource("main-view.fxml"));
             try {
                 Scene scene = new Scene(loader.load());

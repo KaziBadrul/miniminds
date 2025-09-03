@@ -4,23 +4,35 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.layout.HBox?>
 
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.control.Label?>
+
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.example.miniminds.MathQuizController"
-      alignment="CENTER" spacing="20"
-      style="-fx-padding: 40; -fx-background-color: #f8f9fa;">
+      spacing="20" alignment="CENTER"
+      prefWidth="600" prefHeight="400"
+      style="-fx-background-color: #28a745; -fx-padding: 20px;">
 
     <!-- Question -->
-    <Text fx:id="questionText" style="-fx-font-size: 24px; -fx-font-weight: bold;" />
+    <Text fx:id="questionText" style="-fx-font-size: 35px;" styleClass="game-text-bold"/>
 
-    <!-- Answer Buttons -->
+    <!-- Answer buttons -->
     <HBox spacing="20" alignment="CENTER">
-        <Button fx:id="answerBtn1" onAction="#handleAnswer" prefWidth="100"/>
-        <Button fx:id="answerBtn2" onAction="#handleAnswer" prefWidth="100"/>
-        <Button fx:id="answerBtn3" onAction="#handleAnswer" prefWidth="100"/>
+        <Button fx:id="answerBtn1" text="Option 1" onAction="#handleAnswer" styleClass="game-button"/>
+        <Button fx:id="answerBtn2" text="Option 2" onAction="#handleAnswer" styleClass="game-button"/>
+        <Button fx:id="answerBtn3" text="Option 3" onAction="#handleAnswer" styleClass="game-button"/>
     </HBox>
 
-    <!-- Feedback -->
-    <Text fx:id="feedbackText" style="-fx-font-size: 18px; -fx-fill: green;"/>
+    <!-- Feedback box -->
+    <StackPane styleClass="feedback-box">
+        <Text fx:id="feedbackText" text=" " style="-fx-fill: green;" styleClass="game-text-normal"/>
+    </StackPane>
 
+    <!-- Score and remaining -->
+    <HBox spacing="20" alignment="CENTER">
+        <Text fx:id="scoreText" styleClass="game-text-normal"/>
+        <Text fx:id="remainingText" styleClass="game-text-normal"/>
+    </HBox>
 </VBox>
+

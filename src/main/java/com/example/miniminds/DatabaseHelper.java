@@ -66,4 +66,34 @@ public class DatabaseHelper {
             return false;
         }
     }
+
+    // Get math score for a user
+    public static int getMathScore(String email) {
+        String sql = "SELECT math FROM users WHERE email = ?";
+        try (Connection conn = DriverManager.getConnection(DB_URL);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, email);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("math");
+            }
+        } catch (SQLException e) {
+            System.out.println("❌ Error getting math score: " + e.getMessage());
+        }
+        return 0;
+    }
+
+    // Update math score for a user
+    public static void updateMathScore(String email, int newScore) {
+        String sql = "UPDATE users SET math = ? WHERE email = ?";
+        try (Connection conn = DriverManager.getConnection(DB_URL);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, newScore);
+            pstmt.setString(2, email);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("❌ Error updating math score: " + e.getMessage());
+        }
+    }
+
 }
