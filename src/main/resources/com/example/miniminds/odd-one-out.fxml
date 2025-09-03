@@ -1,14 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.text.Text?>
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.example.miniminds.OddOneOutController"
+      spacing="20" alignment="CENTER"
+      prefWidth="600" prefHeight="400"
+      style="-fx-background-color: #f0f8ff; -fx-padding: 20px;">
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+    <Text fx:id="questionText" style="-fx-font-size: 28px; -fx-font-weight: bold;" text="Find the odd one out!"/>
+    <Text fx:id="scoreText" style="-fx-font-size: 20px; -fx-font-weight: bold;" />
+    <Text fx:id="remainingText" style="-fx-font-size: 18px;" />
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.example.miniminds.OddOneOutController"
-            prefHeight="400.0" prefWidth="600.0">
+    <HBox spacing="20" alignment="CENTER">
+        <ImageView fx:id="img1" fitWidth="120" fitHeight="120" pickOnBounds="true" preserveRatio="true"/>
+        <ImageView fx:id="img2" fitWidth="120" fitHeight="120" pickOnBounds="true" preserveRatio="true"/>
+        <ImageView fx:id="img3" fitWidth="120" fitHeight="120" pickOnBounds="true" preserveRatio="true"/>
+        <ImageView fx:id="img4" fitWidth="120" fitHeight="120" pickOnBounds="true" preserveRatio="true"/>
+    </HBox>
 
-</AnchorPane>
+    <Text fx:id="feedbackText" style="-fx-font-size: 20px; -fx-fill: green;"/>
+
+    <Text fx:id="levelText" style="-fx-font-size: 20px; -fx-font-weight: bold;" />
+
+</VBox>

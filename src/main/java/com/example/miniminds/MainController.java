@@ -27,7 +27,7 @@ public class MainController {
         // Math Game (Under Development) 🏗️
         // Letter to Image Game
         // Memory Card Game
-        // Odd One Out Game
+        // Odd One Out Game (Under Development) 🏗️
         // Mini Quizzes
         // Pop the Balloon Game
         // Timed Challenges
@@ -101,8 +101,12 @@ public class MainController {
             VBox gameRoot = loader.load();
 
             // Loading email
-            MathQuizController controller = loader.getController();
-            controller.setCurrentUserEmail(Session.getCurrentUserEmail());
+            Object controller = loader.getController();
+            if (controller instanceof MathQuizController mathController) {
+                mathController.setCurrentUserEmail(Session.getCurrentUserEmail());
+            } else if (controller instanceof OddOneOutController oddController) {
+                oddController.setCurrentUserEmail(Session.getCurrentUserEmail());
+            }
 
             // Scene with CSS
             Scene gameScene = new Scene(gameRoot, width, height);
