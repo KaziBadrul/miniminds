@@ -64,7 +64,7 @@ public class MainController {
 
         Button quizzesBtn = new Button("Mini Quizzes");
         quizzesBtn.setStyle("-fx-font-size: 16px; -fx-padding: 10 20;");
-        quizzesBtn.setOnAction(e -> openGameWindow("mini-quiz.fxml", "Mini Quizzes", 650, 450));
+        quizzesBtn.setOnAction(e -> openGameWindow("mini-quiz.fxml", "Mini Quizzes", 700, 550));
 
         Button balloonBtn = new Button("Pop the Balloon");
         balloonBtn.setStyle("-fx-font-size: 16px; -fx-padding: 10 20;");
