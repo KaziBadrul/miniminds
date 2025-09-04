@@ -10,7 +10,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="529.0" prefWidth="809.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.miniminds.PopBalloonController">
+<AnchorPane prefHeight="518.0" prefWidth="838.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.miniminds.PopBalloonController">
 
     <children>
         <ImageView fitHeight="188.0" fitWidth="253.0" layoutY="329.0" pickOnBounds="true" preserveRatio="true">
@@ -26,19 +26,19 @@
         </ImageView>
 
         <!-- Balloon 1 -->
-        <Circle fx:id="balloonCircle1" fill="DODGERBLUE" layoutX="147.0" layoutY="126.0" radius="84.0" stroke="BLACK" strokeType="INSIDE" style="-fx-cursor: hand;" /> <!-- 🔹 changed: added fx:id -->
+        <Circle fx:id="balloonCircle1" fill="DODGERBLUE" layoutX="147.0" layoutY="126.0" radius="84.0" stroke="BLACK" strokeType="INSIDE" style="-fx-cursor: hand;" />
         <Text fx:id="balloonNum1" layoutX="140.0" layoutY="135.0" style="-fx-font-size: 24px; -fx-font-weight: bold;" />
-        <CubicCurve controlX1="-59.4" controlX2="0.4" controlY1="-31.2" controlY2="-47.2" endX="-19.0" endY="53.6" fill="WHITE" layoutX="166.0" layoutY="312.0" startX="-19.0" startY="-103.0" stroke="BLACK" />
+        <CubicCurve fx:id="balloonRibbon1" controlX1="-59.4" controlX2="0.4" controlY1="-31.2" controlY2="-47.2" endX="-19.0" endY="53.6" fill="WHITE" layoutX="166.0" layoutY="312.0" startX="-19.0" startY="-103.0" stroke="BLACK" />
 
         <!-- Balloon 2 -->
-        <Circle fx:id="balloonCircle2" fill="#e01fff" layoutX="390.0" layoutY="125.0" radius="84.0" stroke="BLACK" strokeType="INSIDE" style="-fx-cursor: hand;" /> <!-- 🔹 changed: added fx:id -->
+        <Circle fx:id="balloonCircle2" fill="#e01fff" layoutX="390.0" layoutY="125.0" radius="84.0" stroke="BLACK" strokeType="INSIDE" style="-fx-cursor: hand;" />
         <Text fx:id="balloonNum2" layoutX="380.0" layoutY="135.0" style="-fx-font-size: 24px; -fx-font-weight: bold;" />
-        <CubicCurve controlX1="-50.0" controlX2="50.0" controlY1="-100.0" controlY2="100.0" endX="-89.8" endY="60.0" fill="WHITE" layoutX="409.0" layoutY="312.0" startX="-19.0" startY="-103.0" stroke="BLACK" />
+        <CubicCurve fx:id="balloonRibbon2" controlX1="-50.0" controlX2="50.0" controlY1="-100.0" controlY2="100.0" endX="-89.8" endY="60.0" fill="WHITE" layoutX="409.0" layoutY="312.0" startX="-19.0" startY="-103.0" stroke="BLACK" />
 
         <!-- Balloon 3 -->
-        <Circle fx:id="balloonCircle3" fill="#ff8121" layoutX="643.0" layoutY="126.0" radius="84.0" stroke="BLACK" strokeType="INSIDE" style="-fx-cursor: hand;" /> <!-- 🔹 changed: added fx:id -->
+        <Circle fx:id="balloonCircle3" fill="#ff8121" layoutX="643.0" layoutY="126.0" radius="84.0" stroke="BLACK" strokeType="INSIDE" style="-fx-cursor: hand;" />
         <Text fx:id="balloonNum3" layoutX="635.0" layoutY="135.0" style="-fx-font-size: 24px; -fx-font-weight: bold;" />
-        <CubicCurve controlX1="329.8" controlX2="50.0" controlY1="-74.8" controlY2="100.0" endX="298.6" endY="26.0" fill="WHITE" layoutX="419.0" layoutY="322.0" startX="224.0" startY="-112.0" stroke="BLACK" />
+        <CubicCurve fx:id="balloonRibbon3" controlX1="329.8" controlX2="50.0" controlY1="-74.8" controlY2="100.0" endX="298.6" endY="26.0" fill="WHITE" layoutX="419.0" layoutY="322.0" startX="224.0" startY="-112.0" stroke="BLACK" />
 
         <!-- Target button -->
         <Button fx:id="startGameBtn" alignment="CENTER" layoutX="247.0" layoutY="423.0" prefHeight="51.0" prefWidth="266.0" style="-fx-background-color: #f2685e; -fx-background-radius: 10; -fx-cursor: hand;" text="Pop the number 9" textFill="WHITE">
@@ -47,24 +47,24 @@
             </font>
         </Button>
 
-        <!-- Score and Remaining (moved closer to button) -->
-        <Label layoutX="523.0" layoutY="440.0" text="Score :" textFill="RED">
+        <!-- Score and Remaining  -->
+        <Label fx:id="scoreTextLabel" layoutX="523.0" layoutY="440.0" text="Score :" textFill="RED">
             <font>
                 <Font name="Yu Gothic UI Semibold" size="24.0" />
             </font>
         </Label>
-        <Label fx:id="scoreLabel" layoutX="611.0" layoutY="440.0" text="0" textFill="BLACK"> <!-- 🔹 changed -->
+        <Label fx:id="scoreLabel" layoutX="611.0" layoutY="440.0" text="0" textFill="BLACK">
             <font>
                 <Font name="Yu Gothic UI Semibold" size="24.0" />
             </font>
         </Label>
 
-        <Label layoutX="521.0" layoutY="405.0" text="Remaining :" textFill="RED">
+        <Label fx:id="remainingTextLabel" layoutX="521.0" layoutY="405.0" text="Remaining :" textFill="RED">
             <font>
                 <Font name="Yu Gothic UI Semibold" size="24.0" />
             </font>
         </Label>
-        <Label fx:id="remainingLabel" layoutX="672.0" layoutY="405.0" text="20" textFill="BLACK"> <!-- 🔹 changed -->
+        <Label fx:id="remainingLabel" layoutX="672.0" layoutY="405.0" text="20" textFill="BLACK">
             <font>
                 <Font name="Yu Gothic UI Semibold" size="24.0" />
             </font>

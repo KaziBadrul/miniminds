@@ -36,6 +36,7 @@ public class LetterToImageController {
 
     private AudioClip correctSound;
     private AudioClip wrongSound;
+    private AudioClip winningSound;
 
     public void setCurrentUserEmail(String email) {
         this.currentUserEmail = email;
@@ -60,6 +61,7 @@ public class LetterToImageController {
     private void initialize() {
         correctSound = new AudioClip(getClass().getResource("/com/example/miniminds/sounds/correct.wav").toExternalForm());
         wrongSound = new AudioClip(getClass().getResource("/com/example/miniminds/sounds/wrong.wav").toExternalForm());
+        winningSound = new AudioClip(getClass().getResource("/com/example/miniminds/sounds/win-game.mp3").toExternalForm());
 
         Collections.shuffle(images);
         loadNextImage();
@@ -84,6 +86,7 @@ public class LetterToImageController {
 
     private void loadNextImage() {
         if (currentIndex >= images.size()) {
+            winningSound.play();
             feedbackText.setText("🎉 Game Over! Final Score: " + score);
             lettersBox.getChildren().clear();
             imageView.setVisible(false);

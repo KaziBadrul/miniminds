@@ -1,61 +1,91 @@
 package com.example.miniminds;
 
+import javafx.animation.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.text.Text; // 🔹 Added
-import java.util.Random;       // 🔹 Added
+import javafx.scene.media.AudioClip;
+import javafx.scene.shape.CubicCurve;
+import javafx.scene.text.Text;
+import java.util.Random;
 import javafx.scene.shape.Circle;
 
-// 🔹 NEW: Controller for pop-balloon.fxml
+import javafx.util.Duration;
+
+
 public class PopBalloonController {
 
-    @FXML
-    private Button startGameBtn; // Button from FXML
+    @FXML public Label scoreTextLabel;
+    @FXML public Label remainingTextLabel;
+    @FXML private Button startGameBtn; // Button from FXML
 
-    // 🔹 Balloons and numbers
-    @FXML
-    private Circle balloonCircle1; // 🔹 changed
-    @FXML
-    private Circle balloonCircle2; // 🔹 changed
-    @FXML
-    private Circle balloonCircle3; // 🔹 changed
+    //  Balloons and numbers
+    @FXML private Circle balloonCircle1;
+    @FXML private Circle balloonCircle2;
+    @FXML private Circle balloonCircle3;
 
-    @FXML
-    private Label emailLabel; // Label from FXML
+    @FXML private CubicCurve balloonRibbon1;
+    @FXML private CubicCurve balloonRibbon2;
+    @FXML private CubicCurve balloonRibbon3;
 
-    // 🔹 New: Texts for the 3 balloon numbers
-    @FXML
-    private Text balloonNum1;
-    @FXML
-    private Text balloonNum2;
-    @FXML
-    private Text balloonNum3;
+    @FXML private Text balloonNum1;
+    @FXML private Text balloonNum2;
+    @FXML private Text balloonNum3;
 
-    // 🔹 Score and Remaining labels
-    @FXML
-    private Label scoreLabel;
-    @FXML
-    private Label remainingLabel;
+    //  Score and Remaining labels
+    @FXML private Label scoreLabel;
+    @FXML private Label remainingLabel;
+
+    private AudioClip correctSound;
+    private AudioClip wrongSound;
+    private AudioClip popSound;
+    private AudioClip winningSound;
 
     private String currentUserEmail;
-    private final Random random = new Random(); // 🔹 Added
+    private final Random random = new Random();
 
-    // 🔹 Track score and remaining rounds
+    //  Track score and remaining rounds
     private int score = 0;
     private int remaining = 20;
     private int targetNumber;
 
-    // 🔹 Called from MainController when opening the game
+    // Called from MainController when opening the game
     public void setCurrentUserEmail(String email) {
         this.currentUserEmail = email;
-        if (emailLabel != null) {
-            emailLabel.setText("Player Email: " + email);
-        }
+    }
+
+    private void animateRibbons() {
+        Timeline timeline = new Timeline(
+                new KeyFrame(Duration.ZERO,
+                        new KeyValue(balloonRibbon1.controlX1Property(), balloonRibbon1.getControlX1()),
+                        new KeyValue(balloonRibbon1.controlX2Property(), balloonRibbon1.getControlX2()),
+                        new KeyValue(balloonRibbon2.controlX1Property(), balloonRibbon2.getControlX1()),
+                        new KeyValue(balloonRibbon2.controlX2Property(), balloonRibbon2.getControlX2()),
+                        new KeyValue(balloonRibbon3.controlX1Property(), balloonRibbon3.getControlX1()),
+                        new KeyValue(balloonRibbon3.controlX2Property(), balloonRibbon3.getControlX2())
+                ),
+                new KeyFrame(Duration.seconds(2),
+                        new KeyValue(balloonRibbon1.controlX1Property(), balloonRibbon1.getControlX1() + 15),
+                        new KeyValue(balloonRibbon1.controlX2Property(), balloonRibbon1.getControlX2() + 15),
+                        new KeyValue(balloonRibbon2.controlX1Property(), balloonRibbon2.getControlX1() + 15),
+                        new KeyValue(balloonRibbon2.controlX2Property(), balloonRibbon2.getControlX2() + 15),
+                        new KeyValue(balloonRibbon3.controlX1Property(), balloonRibbon3.getControlX1() + 15),
+                        new KeyValue(balloonRibbon3.controlX2Property(), balloonRibbon3.getControlX2() + 15)
+                )
+        );
+        timeline.setAutoReverse(true);
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
     }
 
     @FXML
     private void initialize() {
+        animateRibbons();
+        correctSound = new AudioClip(getClass().getResource("/com/example/miniminds/sounds/correct.wav").toExternalForm());
+        wrongSound = new AudioClip(getClass().getResource("/com/example/miniminds/sounds/wrong.wav").toExternalForm());
+        popSound = new AudioClip(getClass().getResource("/com/example/miniminds/sounds/balloon-pop.mp3").toExternalForm());
+        winningSound = new AudioClip(getClass().getResource("/com/example/miniminds/sounds/win-game.mp3").toExternalForm());
+
 
         updateLabels();
         generateRound();
@@ -66,15 +96,33 @@ public class PopBalloonController {
         });
 
         // 🔹 FIXED: Circles are now clickable instead of texts
-        balloonCircle1.setOnMouseClicked(e -> checkBalloon(balloonNum1)); // 🔹 changed
-        balloonCircle2.setOnMouseClicked(e -> checkBalloon(balloonNum2)); // 🔹 changed
-        balloonCircle3.setOnMouseClicked(e -> checkBalloon(balloonNum3)); // 🔹 changed
+        balloonCircle1.setOnMouseClicked(e -> checkBalloon(balloonNum1));
+        balloonCircle2.setOnMouseClicked(e -> checkBalloon(balloonNum2));
+        balloonCircle3.setOnMouseClicked(e -> checkBalloon(balloonNum3));
     }
+
+
 
     // 🔹 Start a new round with fresh numbers
     private void generateRound() {
         if (remaining <= 0) {
             startGameBtn.setText("Game Over!");
+            int previousScore = DatabaseHelper.getBalloonScore(currentUserEmail);
+            int addedScore = (int) Math.ceil(score / 2.0);
+            int newScore = previousScore + addedScore;
+            DatabaseHelper.updateBalloonScore(currentUserEmail, newScore);
+
+            int level = newScore / 20;
+
+            remainingTextLabel.setText(
+                    "Previous Score: " + previousScore +
+                            " + " + addedScore +
+                            "\nNew Score: " + newScore +
+                            "\nLevel: " + level
+            );
+            scoreTextLabel.setText("");
+            scoreLabel.setText("");
+            remainingLabel.setText("");
             return;
         }
 
@@ -102,17 +150,62 @@ public class PopBalloonController {
 
     // 🔹 Check if clicked balloon is correct
     private void checkBalloon(Text clickedBalloon) {
-        if (remaining <= 0) return;
+        if (remaining <= 0) {
+            winningSound.play();
+            return;
+        };
 
         int clickedNum = Integer.parseInt(clickedBalloon.getText());
+        popSound.play();
+
+        Circle associatedCircle = getCircleForText(clickedBalloon);
+
+
         if (clickedNum == targetNumber) {
+            correctSound.play();
             score++;
+        } else {
+            wrongSound.play();
         }
+
+        // Fade out the balloon
+        FadeTransition fade = new FadeTransition(Duration.millis(500), associatedCircle);
+        fade.setFromValue(1.0);
+        fade.setToValue(0.0);
+        fade.play();
+
+        // Also fade out the number
+        FadeTransition fadeText = new FadeTransition(Duration.millis(500), clickedBalloon);
+        fadeText.setFromValue(1.0);
+        fadeText.setToValue(0.0);
+        fadeText.play();
+
         remaining--;
 
         updateLabels();
-        generateRound();
+
+        // Pause for 1 second before generating the next round
+        PauseTransition pause = new PauseTransition(Duration.seconds(1));
+        pause.setOnFinished(e -> {
+            // Reset faded balloons back to visible
+            balloonCircle1.setOpacity(1);
+            balloonCircle2.setOpacity(1);
+            balloonCircle3.setOpacity(1);
+            balloonNum1.setOpacity(1);
+            balloonNum2.setOpacity(1);
+            balloonNum3.setOpacity(1);
+
+            generateRound();
+        });
+        pause.play();
     }
+
+    private Circle getCircleForText(Text balloonText) {
+        if (balloonText == balloonNum1) return balloonCircle1;
+        if (balloonText == balloonNum2) return balloonCircle2;
+        return balloonCircle3;
+    }
+
 
     // 🔹 Update score and remaining labels
     private void updateLabels() {

@@ -13,6 +13,7 @@ public class HomeApplication extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(HomeApplication.class.getResource("home-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1280, 720);
         stage.setTitle("Miniminds");
+        stage.setFullScreen(true);
         stage.setScene(scene);
         stage.show();
     }
