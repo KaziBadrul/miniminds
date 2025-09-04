@@ -9,6 +9,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.media.AudioClip;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.security.MessageDigest;
@@ -19,8 +20,14 @@ public class LoginController {
     @FXML private TextField emailField;
     @FXML private PasswordField passwordField;
 
+    private AudioClip loginSound;
+
     @FXML
     private void handleLogin(ActionEvent event) {
+        if (loginSound == null) {
+            loginSound = new AudioClip(getClass().getResource("/com/example/miniminds/sounds/login.wav").toExternalForm());
+        }
+
         String email = emailField.getText();
         String password = passwordField.getText();
 
@@ -32,6 +39,7 @@ public class LoginController {
         String hashedPassword = hashPassword(password);
 
         if (DatabaseHelper.validateUser(email, hashedPassword)) {
+            loginSound.play();
             Session.setCurrentUserEmail(email);
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("main-view.fxml"));

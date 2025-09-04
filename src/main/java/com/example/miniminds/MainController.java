@@ -7,6 +7,10 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ProgressBar;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
@@ -27,7 +31,7 @@ public class MainController {
         // Math Game (Under Development) 🏗️
         // Letter to Image Game (Under Development) 🏗️
         // Memory Card Game
-        // Odd One Out Game (Under Development) 🏗️
+        // Odd One Out Game (Need Design) 👗
         // Mini Quizzes
         // Pop the Balloon Game
         // Timed Challenges
@@ -80,8 +84,78 @@ public class MainController {
     @FXML
     private void showProfile() {
         contentArea.getChildren().clear();
-        contentArea.getChildren().add(new Text("Profile content goes here."));
+
+        User user = DatabaseHelper.getUserByEmail(Session.getCurrentUserEmail());
+
+        VBox profileBox = new VBox(20);
+        profileBox.setStyle("-fx-padding: 20; -fx-background-color: #f0f8ff;");
+
+        // ===== User Info =====
+        ImageView avatar = new ImageView();
+        String avatarPath = user.getAge() < 18 ? "/com/example/miniminds/images/kid.png"
+                : "/com/example/miniminds/images/adult.png";
+        avatar.setImage(new Image(getClass().getResourceAsStream(avatarPath)));
+        avatar.setFitHeight(120);
+        avatar.setFitWidth(120);
+        avatar.setPreserveRatio(true);
+
+        Text nameText = new Text("Name: " + user.getName());
+        Text emailText = new Text("Email: " + user.getEmail());
+        Text ageText = new Text("Age: " + user.getAge());
+
+        VBox userInfoBox = new VBox(5, nameText, emailText, ageText);
+        userInfoBox.setStyle("-fx-padding: 10;");
+
+        profileBox.getChildren().addAll(avatar, userInfoBox, new Text("Game Performance:"));
+
+        // ===== Game Performance Bars =====
+        profileBox.getChildren().addAll(
+                createGameLevelBar("Math Quiz", user.getMath()),
+                createGameLevelBar("Letter-to-Image", user.getSpelling()),
+                createGameLevelBar("Memory Card", user.getMemory()),
+                createGameLevelBar("Odd One Out", user.getIq()),
+                createGameLevelBar("Number Game", user.getNumbers()),
+                createGameLevelBar("Timed Challenge", user.getTimed())
+        );
+
+        // ===== Average Level =====
+        double avgLevel = user.getAverageLevel();
+        Text avgText = new Text("Average Level: " + String.format("%.1f", avgLevel));
+        ProgressBar avgBar = new ProgressBar(avgLevel / 10.0); // normalize 0–1
+        avgBar.setPrefWidth(300);
+        avgBar.setStyle("-fx-accent: #2196f3; -fx-pref-height: 20px;"); // blue bar
+
+        VBox avgBox = new VBox(5, new Text("Average Level:"), avgText, avgBar);
+        avgBox.setStyle("-fx-padding: 10;");
+
+        profileBox.getChildren().add(avgBox);
+
+        contentArea.getChildren().add(profileBox);
     }
+
+    // ===== Helper to create game bars =====
+    private VBox createGameLevelBar(String gameName, int score) {
+        VBox box = new VBox(5);
+
+        // Game label
+        Text label = new Text(gameName + " (Score: " + score + ")");
+
+        // Level calculation
+        int currentLevel = score / 20;
+        double progress = (score % 20) / 20.0; // progress toward next level (0–1)
+
+        // Progress bar
+        ProgressBar bar = new ProgressBar(progress);
+        bar.setPrefWidth(300);
+        bar.setStyle("-fx-accent: #4caf50; -fx-pref-height: 20px;"); // green
+
+        // Level text
+        Text levelText = new Text("Level " + currentLevel);
+
+        box.getChildren().addAll(label, bar, levelText);
+        return box;
+    }
+
 
     @FXML
     private void showSettings() {
