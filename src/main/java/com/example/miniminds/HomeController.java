@@ -8,9 +8,29 @@ import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
+import javafx.scene.media.AudioClip;
 import java.io.IOException;
 
 public class HomeController {
+
+    @FXML
+    private Button loginButton;
+
+    @FXML
+    private Button signupButton;
+
+    private AudioClip hoverSound;
+
+    @FXML
+    private void initialize() {
+        // Load your hover sound
+        hoverSound = new AudioClip(getClass().getResource("/com/example/miniminds/sounds/rectangle-ding.mp3").toExternalForm());
+
+        // Add hover effects
+        loginButton.setOnMouseEntered(e -> hoverSound.play());
+        signupButton.setOnMouseEntered(e -> hoverSound.play());
+    }
 
     @FXML
     private void handleLogin(ActionEvent event) throws IOException {
@@ -27,11 +47,9 @@ public class HomeController {
         VBox root = loader.load();
         Scene scene = new Scene(root, Session.getWIDTH(), Session.getHEIGHT());
 
-         // Get the current stage
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setScene(scene);
         stage.setFullScreen(true);
-
         stage.show();
     }
 }
