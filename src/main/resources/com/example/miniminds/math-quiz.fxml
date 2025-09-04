@@ -15,6 +15,7 @@
       style="-fx-background-color: #28a745; -fx-padding: 20px;">
 
     <!-- Question -->
+    <Text fx:id="levelText" style="-fx-font-size: 30px;" styleClass="game-text-bold"/>
     <Text fx:id="questionText" style="-fx-font-size: 35px;" styleClass="game-text-bold"/>
 
     <!-- Answer buttons -->

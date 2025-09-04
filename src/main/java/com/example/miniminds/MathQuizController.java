@@ -22,6 +22,7 @@ public class MathQuizController {
     @FXML private Text feedbackText;
     @FXML private Text scoreText;
     @FXML private Text remainingText;
+    @FXML private Text levelText;
 
     private int correctAnswer;
     private int score = 0;
@@ -36,9 +37,23 @@ public class MathQuizController {
 
     public void setCurrentUserEmail(String email) {
         this.currentUserEmail = email;
+        loadUserLevel();   // <-- load DB here, not in initialize()
+    }
+
+    private void loadUserLevel() {
+        int scoreFromDB = DatabaseHelper.getMathScore(currentUserEmail);
+        userLevel = scoreFromDB / 20;
+        if (userLevel < 1) userLevel = 1;
+
+        levelText.setText("Level " + userLevel);
+        scoreText.setText("Score: 0");
+        remainingText.setText("Remaining: " + TOTAL_QUESTIONS);
+
+        generateQuestion();
     }
 
     private final Random random = new Random();
+    private int userLevel = 1;
 
     @FXML
     private void initialize() {
@@ -57,10 +72,22 @@ public class MathQuizController {
             return;
         }
 
-        int a = random.nextInt(10) + 1;
-        int b = random.nextInt(10) + 1;
-        correctAnswer = a + b;
-        questionText.setText(a + " + " + b + " = ?");
+
+
+        if (userLevel <= 5) {
+            int a = random.nextInt(10 * userLevel) + 1;
+            int b = random.nextInt(10 * userLevel) + 1;
+            correctAnswer = a + b;
+            questionText.setText(a + " + " + b + " = ?");
+        }
+        if (userLevel > 5) {
+            int modLevel = userLevel % 10;
+            if (modLevel == 0) modLevel = 10;  // ensure it's not zero
+            int a = random.nextInt(10 * modLevel) + 1;
+            int b = random.nextInt(10 * modLevel) + 1;
+            correctAnswer = a * b;
+            questionText.setText(a + " X " + b + " = ?");
+        }
 
         // Randomly place correct answer
         int correctIndex = random.nextInt(3);
@@ -132,6 +159,7 @@ public class MathQuizController {
         feedbackText.setText("Final Score: " + score + " / " + TOTAL_QUESTIONS);
 
         int previousScore = DatabaseHelper.getMathScore(currentUserEmail);
+//        System.out.println("Previous Score from DB: " + currentUserEmail);
         int addedScore = (int) Math.ceil(score / 2.0);
         int newScore = previousScore + addedScore;
         DatabaseHelper.updateMathScore(currentUserEmail, newScore);

@@ -12,7 +12,7 @@ public class HomeApplication extends Application {
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(HomeApplication.class.getResource("home-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), Session.getWIDTH(), Session.getHEIGHT());
-        stage.setTitle("Miniminds");
+        stage.setTitle("MiniMinds");
         stage.setMaximized(true);
         stage.setScene(scene);
         stage.show();
