@@ -28,12 +28,12 @@ public class MainController {
         contentArea.getChildren().clear();
 
         // Games Overview
-        // Math Game (Under Development) 🏗️
-        // Letter to Image Game (Under Development) 🏗️
-        // Memory Card Game
+        // Math Game (Need Design) 👗
+        // Letter to Image Game (Need Design) 👗
+        // Memory Card Game (Under Development) 🏗️
         // Odd One Out Game (Need Design) 👗
         // Mini Quizzes
-        // Pop the Balloon Game
+        // Pop the Balloon Game (Under Development) 🏗️
         // Timed Challenges
 
         // Other Features
