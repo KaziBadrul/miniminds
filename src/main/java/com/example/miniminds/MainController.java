@@ -237,6 +237,8 @@ public class MainController {
                 popController.setCurrentUserEmail(Session.getCurrentUserEmail());
             }  else if (controller instanceof MemoryGameController memoryController) {
                 memoryController.setCurrentUserEmail(Session.getCurrentUserEmail());
+            } else if (controller instanceof MiniQuizController quizController) {
+                quizController.setCurrentUserEmail(Session.getCurrentUserEmail());
             }
 
             // Scene with CSS

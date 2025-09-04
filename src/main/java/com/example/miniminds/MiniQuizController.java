@@ -17,6 +17,7 @@ public class MiniQuizController {
     @FXML private Label optionDLabel;
     @FXML private Label scoreLabel;
     @FXML private Label remainingLabel;
+    @FXML private Label finalLabel;
 
     private int currentQuestionIndex = 0;
     private int score = 0;
@@ -25,6 +26,10 @@ public class MiniQuizController {
     private AudioClip correctSound;
     private AudioClip wrongSound;
     private AudioClip winningSound;
+
+    private String currentUserEmail;
+    public void setCurrentUserEmail(String email) {
+        this.currentUserEmail = email; }
 
     @FXML
     public void initialize() {
@@ -39,6 +44,19 @@ public class MiniQuizController {
 
     private void showQuestion() {
         if (currentQuestionIndex >= questions.size()) {
+            int prevScore = DatabaseHelper.getOddOneOutScore(currentUserEmail);
+            int pointsEarned = (int) Math.ceil(score / 2.0);
+            int newScore = prevScore + pointsEarned;
+            int level = newScore / 20;
+
+            finalLabel.setText("🎉 Game Over!\nIQ Gained: " + prevScore +
+                    " + " + pointsEarned +
+                    "\nLevel: " + level);
+//            remainingText.setText("Remaining: 0");
+
+            // Save new IQ score in DB
+            DatabaseHelper.updateOddOneOutScore(currentUserEmail, newScore);
+
             winningSound.play();
             questionLabel.setText("Quiz Finished! 🎉");
             optionALabel.setVisible(false);
