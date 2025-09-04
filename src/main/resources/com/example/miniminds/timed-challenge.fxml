@@ -1,14 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.example.miniminds.TimedChallengeController"
-            prefHeight="400.0" prefWidth="600.0">
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.example.miniminds.TimedChallengeController"
+      spacing="20" alignment="CENTER"
+      prefWidth="800" prefHeight="600"
+      style="-fx-background-color: #28a745; -fx-padding: 20px;">
 
-</AnchorPane>
+    <!-- Timer and Score -->
+    <HBox spacing="50" alignment="CENTER">
+        <Text fx:id="timerText" style="-fx-font-size: 24px; -fx-fill: white;" />
+        <Text fx:id="scoreText" style="-fx-font-size: 24px; -fx-fill: white;" />
+    </HBox>
+
+    <!-- Question -->
+    <Text fx:id="questionText" style="-fx-font-size: 40px; -fx-fill: white;" />
+
+    <!-- Answer Buttons -->
+    <HBox spacing="30" alignment="CENTER">
+        <Button fx:id="answerBtn1" text="Option 1" onAction="#handleAnswer"
+                style="-fx-background-color: #4c008a; -fx-text-fill: white; -fx-font-size: 18px; -fx-background-radius: 20;" />
+        <Button fx:id="answerBtn2" text="Option 2" onAction="#handleAnswer"
+                style="-fx-background-color: #4c008a; -fx-text-fill: white; -fx-font-size: 18px; -fx-background-radius: 20;" />
+        <Button fx:id="answerBtn3" text="Option 3" onAction="#handleAnswer"
+                style="-fx-background-color: #4c008a; -fx-text-fill: white; -fx-font-size: 18px; -fx-background-radius: 20;" />
+    </HBox>
+
+    <!-- Feedback -->
+    <Text fx:id="feedbackText" style="-fx-font-size: 20px; -fx-fill: yellow;" />
+
+</VBox>

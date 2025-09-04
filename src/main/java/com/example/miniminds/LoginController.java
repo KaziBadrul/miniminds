@@ -44,7 +44,7 @@ public class LoginController {
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("main-view.fxml"));
             try {
-                Scene scene = new Scene(loader.load());
+                Scene scene = new Scene(loader.load(), Session.getWIDTH(), Session.getHEIGHT());
                 scene.getStylesheets().add(getClass().getResource("/com/example/miniminds/profile.css").toExternalForm());
                 Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 stage.setScene(scene);
@@ -76,7 +76,9 @@ public class LoginController {
     @FXML
     private void handleBack(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("home-view.fxml"));
-        Scene scene = new Scene(loader.load());
+        Scene scene = new Scene(loader.load(), Session.getWIDTH(), Session.getHEIGHT());
+
+         // Get the current stage
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setScene(scene);
         stage.show();

@@ -36,7 +36,7 @@ public class MainController {
         // Odd One Out Game ✅
         // Mini Quizzes ✅
         // Pop the Balloon Game ✅
-        // Timed Challenges (Under Development) 🏗️ ADRIT
+        // Timed Challenges (Under Development) ✅
 
         // Other Features ----------------------------------
         // Progress Tracking (Game depends on your level) 🏗️ ADRIT
@@ -239,6 +239,8 @@ public class MainController {
                 memoryController.setCurrentUserEmail(Session.getCurrentUserEmail());
             } else if (controller instanceof MiniQuizController quizController) {
                 quizController.setCurrentUserEmail(Session.getCurrentUserEmail());
+            } else if (controller instanceof TimedChallengeController timedController) {
+                timedController.setCurrentUserEmail(Session.getCurrentUserEmail());
             }
 
             // Scene with CSS

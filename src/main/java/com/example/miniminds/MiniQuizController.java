@@ -37,6 +37,7 @@ public class MiniQuizController {
         wrongSound = new AudioClip(getClass().getResource("/com/example/miniminds/sounds/wrong.wav").toExternalForm());
         winningSound = new AudioClip(getClass().getResource("/com/example/miniminds/sounds/win-game.mp3").toExternalForm());
 
+        finalLabel.setStyle("-fx-background-color: transparent;");
         questions = generateQuestions();
         Collections.shuffle(questions);
         showQuestion();

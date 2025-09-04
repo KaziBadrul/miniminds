@@ -25,7 +25,9 @@ public class HomeController {
     private void switchScene(ActionEvent event, String fxmlFile) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
         VBox root = loader.load();
-        Scene scene = new Scene(root);
+        Scene scene = new Scene(root, Session.getWIDTH(), Session.getHEIGHT());
+
+         // Get the current stage
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setScene(scene);
         stage.setFullScreen(true);

@@ -20,19 +20,19 @@
         </Label>
 
         <!-- Options -->
-        <Label fx:id="optionALabel" alignment="CENTER" layoutX="236.0" layoutY="183.0" onMouseClicked="#handleOptionClick" prefHeight="40.0" prefWidth="250.0" style="-fx-background-color: #fcb321; -fx-background-radius: 12;" text="Option A" textFill="WHITE">
+        <Label fx:id="optionALabel" alignment="CENTER" layoutX="236.0" layoutY="183.0" onMouseClicked="#handleOptionClick" prefHeight="40.0" prefWidth="250.0" style="-fx-background-color: #fcb321; -fx-background-radius: 12; -fx-font-weight: bold;" text="Option A" textFill="WHITE">
             <font><Font name="Consolas" size="20.0" /></font>
         </Label>
 
-        <Label fx:id="optionBLabel" alignment="CENTER" layoutX="236.0" layoutY="235.0" onMouseClicked="#handleOptionClick" prefHeight="40.0" prefWidth="250.0" style="-fx-background-color: #ed092f; -fx-background-radius: 12;" text="Option B" textFill="WHITE">
+        <Label fx:id="optionBLabel" alignment="CENTER" layoutX="236.0" layoutY="235.0" onMouseClicked="#handleOptionClick" prefHeight="40.0" prefWidth="250.0" style="-fx-background-color: #ed092f; -fx-background-radius: 12; -fx-font-weight: bold;" text="Option B" textFill="WHITE">
             <font><Font name="Consolas" size="20.0" /></font>
         </Label>
 
-        <Label fx:id="optionCLabel" alignment="CENTER" layoutX="236.0" layoutY="287.0" onMouseClicked="#handleOptionClick" prefHeight="40.0" prefWidth="250.0" style="-fx-background-color: #ed092f; -fx-background-radius: 12;" text="Option C" textFill="WHITE">
+        <Label fx:id="optionCLabel" alignment="CENTER" layoutX="236.0" layoutY="287.0" onMouseClicked="#handleOptionClick" prefHeight="40.0" prefWidth="250.0" style="-fx-background-color: #ed092f; -fx-background-radius: 12; -fx-font-weight: bold;" text="Option C" textFill="WHITE">
             <font><Font name="Consolas" size="20.0" /></font>
         </Label>
 
-        <Label fx:id="optionDLabel" alignment="CENTER" layoutX="236.0" layoutY="339.0" onMouseClicked="#handleOptionClick" prefHeight="40.0" prefWidth="250.0" style="-fx-background-color: #ed092f; -fx-background-radius: 12;" text="Option D" textFill="WHITE">
+        <Label fx:id="optionDLabel" alignment="CENTER" layoutX="236.0" layoutY="339.0" onMouseClicked="#handleOptionClick" prefHeight="40.0" prefWidth="250.0" style="-fx-background-color: #ed092f; -fx-background-radius: 12; -fx-font-weight: bold;" text="Option D" textFill="WHITE">
             <font><Font name="Consolas" size="20.0" /></font>
         </Label>
 

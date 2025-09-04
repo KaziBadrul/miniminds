@@ -245,5 +245,33 @@ public class DatabaseHelper {
         }
     }
 
+    public static int getTimedScore(String email) {
+        String sql = "SELECT timed FROM users WHERE email = ?";
+        try (Connection conn = DriverManager.getConnection(DB_URL);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, email);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("timed");
+            }
+        } catch (SQLException e) {
+            System.out.println("❌ Error getting timed score: " + e.getMessage());
+        }
+        return 0;
+    }
+
+    // Update balloon score for a user
+    public static void updateTimedScore(String email, int newScore) {
+        String sql = "UPDATE users SET timed = ? WHERE email = ?";
+        try (Connection conn = DriverManager.getConnection(DB_URL);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, newScore);
+            pstmt.setString(2, email);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("❌ Error updating timed score: " + e.getMessage());
+        }
+    }
+
 
 }
