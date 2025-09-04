@@ -86,8 +86,6 @@ public class MainController {
 
     }
 
-    //TODO: NO PICTURE IN ODDS ONE OUT
-    //TODO: MEMORY GAME
     @FXML
     private void showProfile() {
         contentArea.getChildren().clear();
@@ -127,7 +125,7 @@ public class MainController {
         String[][] games = {
                 {"Math Quiz", String.valueOf(user.getMath()), "/com/example/miniminds/images/math.png"},
                 {"Letter-to-Image", String.valueOf(user.getSpelling()), "/com/example/miniminds/images/spelling.png"},
-                {"Match the Card", String.valueOf(user.getMemory()), "/com/example/miniminds/images/memory.png"},
+                {"Memory Card", String.valueOf(user.getMemory()), "/com/example/miniminds/images/memory.png"},
                 {"Odd One Out", String.valueOf(user.getIq()), "/com/example/miniminds/images/iq.png"},
                 {"Pop the Balloon", String.valueOf(user.getNumbers()), "/com/example/miniminds/images/numbers.png"},
                 {"Timed Challenge", String.valueOf(user.getTimed()), "/com/example/miniminds/images/timed.png"}
