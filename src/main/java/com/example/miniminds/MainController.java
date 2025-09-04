@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ProgressBar;
@@ -28,13 +29,13 @@ public class MainController {
         contentArea.getChildren().clear();
 
         // Games Overview
-        // Math Game (Need Design) 👗
-        // Letter to Image Game (Need Design) 👗
-        // Memory Card Game (Under Development) 🏗️
-        // Odd One Out Game (Need Design) 👗
-        // Mini Quizzes
-        // Pop the Balloon Game
-        // Timed Challenges
+        // Math Game ✅
+        // Letter to Image Game ✅
+        // Memory Card Game (Under Development) 🏗️ ARIQ
+        // Odd One Out Game ✅
+        // Mini Quizzes (Under Development) 🏗️ ARIQ
+        // Pop the Balloon Game (Need Design) 👗 ADRIT
+        // Timed Challenges (Under Development) 🏗️ ADRIT
 
         // Other Features
         // Progress Tracking
@@ -176,7 +177,7 @@ public class MainController {
     private void openGameWindow(String fxmlFile, String title, int width, int height) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
-            VBox gameRoot = loader.load();
+            Parent gameRoot = loader.load();
 
             // Loading email
             Object controller = loader.getController();
