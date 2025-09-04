@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -59,7 +60,7 @@ public class MainController {
 
         Button balloonBtn = new Button("Pop the Balloon");
         balloonBtn.setStyle("-fx-font-size: 16px; -fx-padding: 10 20;");
-        balloonBtn.setOnAction(e -> openGameWindow("pop-balloon.fxml", "Pop the Balloon", 700, 500));
+        balloonBtn.setOnAction(e -> openGameWindow("pop-balloon.fxml", "Pop the Balloon", 780, 600));
 
         Button timedBtn = new Button("Timed Challenge");
         timedBtn.setStyle("-fx-font-size: 16px; -fx-padding: 10 20;");
@@ -98,7 +99,8 @@ public class MainController {
     private void openGameWindow(String fxmlFile, String title, int width, int height) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
-            VBox gameRoot = loader.load();
+            //VBox gameRoot = loader.load();
+            javafx.scene.Parent gameRoot = loader.load();
 
             // Loading email
             Object controller = loader.getController();
@@ -106,6 +108,9 @@ public class MainController {
                 mathController.setCurrentUserEmail(Session.getCurrentUserEmail());
             } else if (controller instanceof OddOneOutController oddController) {
                 oddController.setCurrentUserEmail(Session.getCurrentUserEmail());
+            }
+            else if (controller instanceof PopBalloonController balloonController) {
+                balloonController.setCurrentUserEmail(Session.getCurrentUserEmail());
             }
 
             // Scene with CSS
@@ -116,6 +121,7 @@ public class MainController {
             Stage gameStage = new Stage();
             gameStage.setTitle("MiniMinds - " + title);
             gameStage.setScene(gameScene);
+            gameStage.setResizable(false);
             gameStage.show();
 
         } catch (IOException e) {
