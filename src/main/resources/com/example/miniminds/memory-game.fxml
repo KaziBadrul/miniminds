@@ -5,47 +5,40 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="534.0" prefWidth="739.0" style="-fx-background-color: #f5ed53;"
-            xmlns="http://javafx.com/javafx/24.0.1"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.example.miniminds.MemoryGameController">
+<AnchorPane prefHeight="534.0" prefWidth="739.0" style="-fx-background-color: #f5ed53;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.miniminds.MemoryGameController">
     <children>
         <!-- Remaining count label -->
-        <Label fx:id="remainingLabel" alignment="CENTER" layoutX="270.0" layoutY="387.0" prefHeight="46.0" prefWidth="208.0"
-               style="-fx-background-color: #f5a953; -fx-background-radius: 12;" text="Remaining : 20" textFill="WHITE">
+        <Label fx:id="remainingLabel" alignment="CENTER" layoutX="270.0" layoutY="387.0" prefHeight="46.0" prefWidth="208.0" style="-fx-background-color: #f5a953; -fx-background-radius: 12;" text="Remaining : 20" textFill="WHITE">
             <font>
                 <Font name="Yu Gothic UI Semibold" size="24.0" />
             </font>
         </Label>
 
         <!-- Score label -->
-        <Label fx:id="scoreLabel" alignment="CENTER" layoutX="270.0" layoutY="442.0" prefHeight="46.0" prefWidth="208.0"
-               style="-fx-background-color: #f5a953; -fx-background-radius: 12;" text="Score : 0" textFill="WHITE">
+        <Label fx:id="scoreLabel" alignment="CENTER" layoutX="270.0" layoutY="442.0" prefHeight="46.0" prefWidth="208.0" style="-fx-background-color: #f5a953; -fx-background-radius: 12;" text="Score : 0" textFill="WHITE">
             <font>
                 <Font name="Yu Gothic UI Semibold" size="24.0" />
             </font>
         </Label>
 
         <!-- Message label (NEW for Excellent / Nice try feedback) -->
-        <Label fx:id="messageLabel" alignment="CENTER" layoutX="270.0" layoutY="490.0" prefHeight="30.0" prefWidth="208.0"
-               text="" textFill="BLACK">
+        <Label fx:id="messageLabel" alignment="CENTER" layoutX="270.0" layoutY="490.0" prefHeight="30.0" prefWidth="208.0" text="" textFill="BLACK">
             <font>
                 <Font name="Yu Gothic UI Semibold" size="18.0" />
             </font>
         </Label>
 
         <!-- Rectangles -->
-        <Rectangle fx:id="rect1" arcHeight="5.0" arcWidth="5.0" fill="#524ac2" height="114.0" layoutX="96.0" layoutY="63.0"
-                   stroke="BLACK" strokeType="INSIDE" style="-fx-arc-height: 30; -fx-arc-width: 30;" width="120.0" />
-        <Rectangle fx:id="rect2" arcHeight="5.0" arcWidth="5.0" fill="#524ac2" height="114.0" layoutX="96.0" layoutY="210.0"
-                   stroke="BLACK" strokeType="INSIDE" style="-fx-arc-height: 30; -fx-arc-width: 30;" width="120.0" />
-        <Rectangle fx:id="rect3" arcHeight="5.0" arcWidth="5.0" fill="#524ac2" height="114.0" layoutX="314.0" layoutY="210.0"
-                   stroke="BLACK" strokeType="INSIDE" style="-fx-arc-height: 30; -fx-arc-width: 30;" width="120.0" />
-        <Rectangle fx:id="rect4" arcHeight="5.0" arcWidth="5.0" fill="#524ac2" height="114.0" layoutX="522.0" layoutY="210.0"
-                   stroke="BLACK" strokeType="INSIDE" style="-fx-arc-height: 30; -fx-arc-width: 30;" width="120.0" />
-        <Rectangle fx:id="rect5" arcHeight="5.0" arcWidth="5.0" fill="#524ac2" height="114.0" layoutX="314.0" layoutY="63.0"
-                   stroke="BLACK" strokeType="INSIDE" style="-fx-arc-height: 30; -fx-arc-width: 30;" width="120.0" />
-        <Rectangle fx:id="rect6" arcHeight="5.0" arcWidth="5.0" fill="#524ac2" height="114.0" layoutX="522.0" layoutY="63.0"
-                   stroke="BLACK" strokeType="INSIDE" style="-fx-arc-height: 30; -fx-arc-width: 30;" width="120.0" />
+        <Rectangle fx:id="rect1" arcHeight="5.0" arcWidth="5.0" fill="#524ac2" height="114.0" layoutX="96.0" layoutY="63.0" stroke="BLACK" strokeType="INSIDE" style="-fx-arc-height: 30; -fx-arc-width: 30;" width="120.0" />
+        <Rectangle fx:id="rect2" arcHeight="5.0" arcWidth="5.0" fill="#524ac2" height="114.0" layoutX="96.0" layoutY="210.0" stroke="BLACK" strokeType="INSIDE" style="-fx-arc-height: 30; -fx-arc-width: 30;" width="120.0" />
+        <Rectangle fx:id="rect3" arcHeight="5.0" arcWidth="5.0" fill="#524ac2" height="114.0" layoutX="314.0" layoutY="210.0" stroke="BLACK" strokeType="INSIDE" style="-fx-arc-height: 30; -fx-arc-width: 30;" width="120.0" />
+        <Rectangle fx:id="rect4" arcHeight="5.0" arcWidth="5.0" fill="#524ac2" height="114.0" layoutX="522.0" layoutY="210.0" stroke="BLACK" strokeType="INSIDE" style="-fx-arc-height: 30; -fx-arc-width: 30;" width="120.0" />
+        <Rectangle fx:id="rect5" arcHeight="5.0" arcWidth="5.0" fill="#524ac2" height="114.0" layoutX="314.0" layoutY="63.0" stroke="BLACK" strokeType="INSIDE" style="-fx-arc-height: 30; -fx-arc-width: 30;" width="120.0" />
+        <Rectangle fx:id="rect6" arcHeight="5.0" arcWidth="5.0" fill="#524ac2" height="114.0" layoutX="522.0" layoutY="63.0" stroke="BLACK" strokeType="INSIDE" style="-fx-arc-height: 30; -fx-arc-width: 30;" width="120.0" />
+      <Label fx:id="finalLabel" alignment="CENTER" layoutX="505.0" layoutY="387.0" prefHeight="103.0" prefWidth="208.0" style="-fx-background-color: #f5a953; -fx-background-radius: 12;" textFill="WHITE">
+         <font>
+            <Font name="Yu Gothic UI Semibold" size="24.0" />
+         </font>
+      </Label>
     </children>
 </AnchorPane>

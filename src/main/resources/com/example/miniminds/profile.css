@@ -7,3 +7,12 @@
     -fx-background-radius: 8;
     -fx-pref-height: 15px;
 }
+
+
+.dashboard-buttons {
+-fx-background-color: #4caf50;
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-padding: 10px 20px;
+    -fx-background-radius: 8px;
+}

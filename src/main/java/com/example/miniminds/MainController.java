@@ -29,18 +29,20 @@ public class MainController {
     private void showDashboard() {
         contentArea.getChildren().clear();
 
-        // Games Overview
+        // Games Overview ----------------------------
         // Math Game ✅
         // Letter to Image Game ✅
-        // Memory Card Game (Under Development) 🏗️ ARIQ
+        // Memory Game ✅
         // Odd One Out Game ✅
-        // Mini Quizzes (Under Development) 🏗️ ARIQ
-        // Pop the Balloon Game (Need Design) 👗 ADRIT
+        // Mini Quizzes ✅
+        // Pop the Balloon Game ✅
         // Timed Challenges (Under Development) 🏗️ ADRIT
 
-        // Other Features
-        // Progress Tracking
-        // Rewards System
+        // Other Features ----------------------------------
+        // Progress Tracking (Game depends on your level) 🏗️ ADRIT
+        // Rewards System (Collect stars/badges) 🏗️ ADRIT
+
+        //TODO ARIQ - Make buttons look better
 
         // Title text
         Text title = new Text("Dashboard");
@@ -48,7 +50,8 @@ public class MainController {
 
         // Math Quiz
         Button mathQuizBtn = new Button("Start Math Quiz");
-        mathQuizBtn.setStyle("-fx-font-size: 16px; -fx-padding: 10 20;");
+//        mathQuizBtn.setStyle("-fx-font-size: 16px; -fx-padding: 10 20;");
+        mathQuizBtn.getStyleClass().add("dashboard-buttons");
         mathQuizBtn.setOnAction(e -> openGameWindow("math-quiz.fxml", "Math Quiz", 600, 400));
 
         Button memoryGameBtn = new Button("Play Memory Game");
@@ -83,6 +86,8 @@ public class MainController {
 
     }
 
+    //TODO: NO PICTURE IN ODDS ONE OUT
+    //TODO: MEMORY GAME
     @FXML
     private void showProfile() {
         contentArea.getChildren().clear();
@@ -232,6 +237,8 @@ public class MainController {
                 letterController.setCurrentUserEmail(Session.getCurrentUserEmail());
             } else if (controller instanceof PopBalloonController popController) {
                 popController.setCurrentUserEmail(Session.getCurrentUserEmail());
+            }  else if (controller instanceof MemoryGameController memoryController) {
+                memoryController.setCurrentUserEmail(Session.getCurrentUserEmail());
             }
 
             // Scene with CSS

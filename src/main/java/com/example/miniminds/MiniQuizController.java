@@ -2,6 +2,7 @@ package com.example.miniminds;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.media.AudioClip;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,10 +22,16 @@ public class MiniQuizController {
     private int score = 0;
 
     private List<Question> questions;
+    private AudioClip correctSound;
+    private AudioClip wrongSound;
+    private AudioClip winningSound;
 
     @FXML
     public void initialize() {
-        // Generate 20 kid-friendly questions
+        correctSound = new AudioClip(getClass().getResource("/com/example/miniminds/sounds/correct.wav").toExternalForm());
+        wrongSound = new AudioClip(getClass().getResource("/com/example/miniminds/sounds/wrong.wav").toExternalForm());
+        winningSound = new AudioClip(getClass().getResource("/com/example/miniminds/sounds/win-game.mp3").toExternalForm());
+
         questions = generateQuestions();
         Collections.shuffle(questions);
         showQuestion();
@@ -32,6 +39,7 @@ public class MiniQuizController {
 
     private void showQuestion() {
         if (currentQuestionIndex >= questions.size()) {
+            winningSound.play();
             questionLabel.setText("Quiz Finished! 🎉");
             optionALabel.setVisible(false);
             optionBLabel.setVisible(false);
@@ -62,9 +70,11 @@ public class MiniQuizController {
         Question q = questions.get(currentQuestionIndex);
 
         if (clickedLabel.getText().equals(q.getCorrectAnswer())) {
+            correctSound.play();
             clickedLabel.setStyle("-fx-background-color: green; -fx-background-radius: 12;");
             score++;
         } else {
+            wrongSound.play();
             clickedLabel.setStyle("-fx-background-color: red; -fx-background-radius: 12;");
         }
 

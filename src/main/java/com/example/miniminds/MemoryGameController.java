@@ -5,6 +5,7 @@ import javafx.animation.PauseTransition;
 import javafx.animation.SequentialTransition;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
@@ -21,6 +22,7 @@ public class MemoryGameController {
     @FXML private Label remainingLabel;
     @FXML private Label scoreLabel;
     @FXML private Label messageLabel;
+    @FXML private Label finalLabel;
 
     @FXML private Rectangle rect1, rect2, rect3, rect4, rect5, rect6;
 
@@ -31,12 +33,24 @@ public class MemoryGameController {
     private int score = 0;
     private boolean inputEnabled = false; // disable clicks during sequence
 
+    private String currentUserEmail;
+    public void setCurrentUserEmail(String email) {
+        this.currentUserEmail = email;
+    }
+
     // === Sound setup ===
     private Media dingSound;
+    private AudioClip winningSound;
+    private AudioClip correct;
+    private AudioClip wrong;
 
     @FXML
     public void initialize() {
         allRects = List.of(rect1, rect2, rect3, rect4, rect5, rect6);
+        finalLabel.setStyle("-fx-background-color: transparent;");
+        winningSound = new AudioClip(getClass().getResource("/com/example/miniminds/Sounds/win-game.mp3").toExternalForm());
+        correct = new AudioClip(getClass().getResource("/com/example/miniminds/Sounds/correct.wav").toExternalForm());
+        wrong = new AudioClip(getClass().getResource("/com/example/miniminds/Sounds/wrong.wav").toExternalForm());
 
         // Load sound
         URL soundURL = getClass().getResource("/com/example/miniminds/Sounds/rectangle-ding.mp3");
@@ -116,17 +130,39 @@ public class MemoryGameController {
         remaining--;
         remainingLabel.setText("Remaining : " + remaining);
 
+
         if (won) {
             score++;
             scoreLabel.setText("Score : " + score);
             messageLabel.setText("Excellent");
+            correct.play();
         } else {
             messageLabel.setText("Nice try");
+            wrong.play();
         }
 
         PauseTransition delay = new PauseTransition(Duration.seconds(2));
         delay.setOnFinished(e -> {
             if (remaining > 0) startRound();
+            else {
+                winningSound.play();
+                remainingLabel.setText("🎉 Game Over!");
+                finalLabel.setStyle("-fx-background-color:  #f5a953;");
+                finalLabel.setText("Final Score: " + score );
+
+                int previousScore = DatabaseHelper.getMemoryScore(currentUserEmail);
+                int addedScore = (int) Math.ceil(score / 2.0);
+                int newScore = previousScore + addedScore;
+                DatabaseHelper.updateMemoryScore(currentUserEmail, newScore);
+
+                int level = newScore / 20;
+
+                finalLabel.setText(
+                        "Experience: " + previousScore +
+                                " + " + addedScore  +
+                                "\nLevel: " + level
+                );
+            }
         });
         delay.play();
     }

@@ -217,5 +217,33 @@ public class DatabaseHelper {
         }
     }
 
+    public static int getMemoryScore(String email) {
+        String sql = "SELECT memory FROM users WHERE email = ?";
+        try (Connection conn = DriverManager.getConnection(DB_URL);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, email);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("memory");
+            }
+        } catch (SQLException e) {
+            System.out.println("❌ Error getting memory score: " + e.getMessage());
+        }
+        return 0;
+    }
+
+    // Update balloon score for a user
+    public static void updateMemoryScore(String email, int newScore) {
+        String sql = "UPDATE users SET memory = ? WHERE email = ?";
+        try (Connection conn = DriverManager.getConnection(DB_URL);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, newScore);
+            pstmt.setString(2, email);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("❌ Error updating memory score: " + e.getMessage());
+        }
+    }
+
 
 }
