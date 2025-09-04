@@ -30,6 +30,7 @@ public class MathQuizController {
 
     private AudioClip correctSound;
     private AudioClip wrongSound;
+    private AudioClip winningSound;
 
     private String currentUserEmail;
 
@@ -43,6 +44,7 @@ public class MathQuizController {
     private void initialize() {
         correctSound = new AudioClip(getClass().getResource("/com/example/miniminds/sounds/correct.wav").toExternalForm());
         wrongSound = new AudioClip(getClass().getResource("/com/example/miniminds/sounds/wrong.wav").toExternalForm());
+        winningSound = new AudioClip(getClass().getResource("/com/example/miniminds/sounds/win-game.mp3").toExternalForm());
 
         scoreText.setText("Score: 0");
         remainingText.setText("Remaining: " + TOTAL_QUESTIONS);
@@ -125,6 +127,7 @@ public class MathQuizController {
     }
 
     private void endGame() {
+        winningSound.play();
         questionText.setText("🎉 Game Over!");
         feedbackText.setText("Final Score: " + score + " / " + TOTAL_QUESTIONS);
 

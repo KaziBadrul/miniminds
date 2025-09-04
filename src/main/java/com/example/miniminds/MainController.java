@@ -187,7 +187,16 @@ public class MainController {
                 oddController.setCurrentUserEmail(Session.getCurrentUserEmail());
             } else if (controller instanceof LetterToImageController letterController) {
                 letterController.setCurrentUserEmail(Session.getCurrentUserEmail());
-            } // Add other controllers as needed
+            } else if (controller instanceof PopBalloonController popController) {
+                popController.setCurrentUserEmail(Session.getCurrentUserEmail());
+            }
+//            else if (controller instanceof MiniQuizController quizController) {
+//                quizController.setCurrentUserEmail(Session.getCurrentUserEmail());
+//            } else if (controller instanceof TimedChallengeController timedController) {
+//                timedController.setCurrentUserEmail(Session.getCurrentUserEmail());
+//            } else if (controller instanceof MemoryGameController memoryController) {
+//                memoryController.setCurrentUserEmail(Session.getCurrentUserEmail());
+//            }
 
             // Scene with CSS
             Scene gameScene = new Scene(gameRoot, width, height);

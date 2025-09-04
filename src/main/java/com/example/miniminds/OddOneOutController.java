@@ -34,6 +34,7 @@ public class OddOneOutController {
 
     private AudioClip correctSound;
     private AudioClip wrongSound;
+    private AudioClip winningSound;
 
     private static final String[][] BASE_QUESTIONS = {
             {"dog.png", "cat.png", "lion.png", "car.png"},
@@ -74,6 +75,7 @@ public class OddOneOutController {
     private void initialize() {
         correctSound = new AudioClip(getClass().getResource("/com/example/miniminds/sounds/correct.wav").toExternalForm());
         wrongSound = new AudioClip(getClass().getResource("/com/example/miniminds/sounds/wrong.wav").toExternalForm());
+        winningSound = new AudioClip(getClass().getResource("/com/example/miniminds/sounds/win-game.mp3").toExternalForm());
 
         feedbackText.setText("");
         questionText.setText("Find the odd one out!");
@@ -104,6 +106,7 @@ public class OddOneOutController {
 
     private void loadNextQuestion() {
         if (questionCount >= questions.size()) {
+            winningSound.play();
             endGame();
             return;
         }

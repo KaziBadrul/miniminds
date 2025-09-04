@@ -188,4 +188,34 @@ public class DatabaseHelper {
         }
     }
 
+    // Get balloon score
+    public static int getBalloonScore(String email) {
+        String sql = "SELECT numbers FROM users WHERE email = ?";
+        try (Connection conn = DriverManager.getConnection(DB_URL);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, email);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("numbers");
+            }
+        } catch (SQLException e) {
+            System.out.println("❌ Error getting numbers score: " + e.getMessage());
+        }
+        return 0;
+    }
+
+    // Update balloon score for a user
+    public static void updateBalloonScore(String email, int newScore) {
+        String sql = "UPDATE users SET numbers = ? WHERE email = ?";
+        try (Connection conn = DriverManager.getConnection(DB_URL);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, newScore);
+            pstmt.setString(2, email);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("❌ Error updating numbers score: " + e.getMessage());
+        }
+    }
+
+
 }
