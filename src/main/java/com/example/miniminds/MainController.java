@@ -14,19 +14,13 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ProgressBar;
-import javafx.scene.control.Spinner;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -42,61 +36,98 @@ public class MainController {
     private void showDashboard() {
         contentArea.getChildren().clear();
 
-        // Games Overview ----------------------------
-        // Math Game ✅
-        // Letter to Image Game ✅
-        // Memory Game ✅
-        // Odd One Out Game ✅
-        // Mini Quizzes ✅
-        // Pop the Balloon Game ✅
-        // Timed Challenges (Under Development) ✅
-
-        // Other Features ----------------------------------
-        // Progress Tracking (Game depends on your level) 🏗️ ADRIT
-        // Rewards System (Collect stars/badges) 🏗️ ADRIT
-
-        //TODO ARIQ - Make buttons look better
-
-        // Title text
+        // Title
         Text title = new Text("Dashboard");
-        title.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
+        title.getStyleClass().add("dashboard-title");
 
         // Math Quiz
-        Button mathQuizBtn = new Button("Start Math Quiz");
-//        mathQuizBtn.setStyle("-fx-font-size: 16px; -fx-padding: 10 20;");
-        mathQuizBtn.getStyleClass().add("dashboard-buttons");
+        ImageView mathIcon = new ImageView(new Image(getClass().getResourceAsStream("/com/example/miniminds/images/math.png")));
+        mathIcon.setFitWidth(50);
+        mathIcon.setFitHeight(50);
+        Button mathQuizBtn = new Button("Start Math Quiz", mathIcon);
+        mathQuizBtn.getStyleClass().addAll("dashboard-buttons", "math-quiz-btn");
+        mathQuizBtn.setContentDisplay(ContentDisplay.LEFT);
         mathQuizBtn.setOnAction(e -> openGameWindow("math-quiz.fxml", "Math Quiz", 600, 400));
 
-        Button memoryGameBtn = new Button("Play Memory Game");
-        memoryGameBtn.setStyle("-fx-font-size: 16px; -fx-padding: 10 20;");
+        // Memory Game
+        ImageView memoryIcon = new ImageView(new Image(getClass().getResourceAsStream("/com/example/miniminds/images/memory-game.png")));
+        memoryIcon.setFitWidth(50);
+        memoryIcon.setFitHeight(50);
+        Button memoryGameBtn = new Button("Play Memory Game", memoryIcon);
+        memoryGameBtn.getStyleClass().add("dashboard-buttons");
+        memoryGameBtn.setContentDisplay(ContentDisplay.LEFT);
         memoryGameBtn.setOnAction(e -> openGameWindow("memory-game.fxml", "Memory Game", 800, 600));
 
-        Button letterToImageBtn = new Button("Play Letter-To-Image");
-        letterToImageBtn.setStyle("-fx-font-size: 16px; -fx-padding: 10 20;");
+        // Letter To Image
+        ImageView letterIcon = new ImageView(new Image(getClass().getResourceAsStream("/com/example/miniminds/images/letter-to-image.png")));
+        letterIcon.setFitWidth(50);
+        letterIcon.setFitHeight(50);
+        Button letterToImageBtn = new Button("Play Letter-To-Image", letterIcon);
+        letterToImageBtn.getStyleClass().add("dashboard-buttons");
+        letterToImageBtn.setContentDisplay(ContentDisplay.LEFT);
         letterToImageBtn.setOnAction(e -> openGameWindow("letter-to-image.fxml", "Letter To Image", 800, 600));
 
-        Button oddOneOutBtn = new Button("Play Odd One Out");
-        oddOneOutBtn.setStyle("-fx-font-size: 16px; -fx-padding: 10 20;");
+        // Odd One Out
+        ImageView oddIcon = new ImageView(new Image(getClass().getResourceAsStream("/com/example/miniminds/images/numbers.png")));
+        oddIcon.setFitWidth(50);
+        oddIcon.setFitHeight(50);
+        Button oddOneOutBtn = new Button("Play Odd One Out", oddIcon);
+        oddOneOutBtn.getStyleClass().add("dashboard-buttons");
+        oddOneOutBtn.setContentDisplay(ContentDisplay.LEFT);
         oddOneOutBtn.setOnAction(e -> openGameWindow("odd-one-out.fxml", "Odd One Out", 700, 500));
 
-        Button quizzesBtn = new Button("Mini Quizzes");
-        quizzesBtn.setStyle("-fx-font-size: 16px; -fx-padding: 10 20;");
+        // Mini Quizzes
+        ImageView quizIcon = new ImageView(new Image(getClass().getResourceAsStream("/com/example/miniminds/images/memory.png")));
+        quizIcon.setFitWidth(50);
+        quizIcon.setFitHeight(50);
+        Button quizzesBtn = new Button("Mini Quizzes", quizIcon);
+        quizzesBtn.getStyleClass().add("dashboard-buttons");
+        quizzesBtn.setContentDisplay(ContentDisplay.LEFT);
         quizzesBtn.setOnAction(e -> openGameWindow("mini-quiz.fxml", "Mini Quizzes", 700, 550));
 
-        Button balloonBtn = new Button("Pop the Balloon");
-        balloonBtn.setStyle("-fx-font-size: 16px; -fx-padding: 10 20;");
+        // Pop the Balloon
+        ImageView balloonIcon = new ImageView(new Image(getClass().getResourceAsStream("/com/example/miniminds/images/star.png")));
+        balloonIcon.setFitWidth(50);
+        balloonIcon.setFitHeight(50);
+        Button balloonBtn = new Button("Pop the Balloon", balloonIcon);
+        balloonBtn.getStyleClass().add("dashboard-buttons");
+        balloonBtn.setContentDisplay(ContentDisplay.LEFT);
         balloonBtn.setOnAction(e -> openGameWindow("pop-balloon.fxml", "Pop the Balloon", 838, 518));
 
-        Button timedBtn = new Button("Timed Challenge");
-        timedBtn.setStyle("-fx-font-size: 16px; -fx-padding: 10 20;");
+        // Timed Challenge
+        ImageView timedIcon = new ImageView(new Image(getClass().getResourceAsStream("/com/example/miniminds/images/timed.png")));
+        timedIcon.setFitWidth(50);
+        timedIcon.setFitHeight(50);
+        Button timedBtn = new Button("Timed Challenge", timedIcon);
+        timedBtn.getStyleClass().add("dashboard-buttons");
+        timedBtn.setContentDisplay(ContentDisplay.LEFT);
         timedBtn.setOnAction(e -> openGameWindow("timed-challenge.fxml", "Timed Challenge", 700, 500));
 
-        VBox dashboardLayout = new VBox(20, title, mathQuizBtn, memoryGameBtn, letterToImageBtn, oddOneOutBtn, quizzesBtn, balloonBtn, timedBtn);
-        dashboardLayout.setAlignment(Pos.CENTER);
+        // Layout Grid 3x3
+        GridPane grid = new GridPane();
+        grid.setAlignment(Pos.CENTER);
+        grid.setHgap(20);
+        grid.setVgap(20);
 
+        grid.add(mathQuizBtn, 0, 0);
+        grid.add(memoryGameBtn, 1, 0);
+        grid.add(letterToImageBtn, 2, 0);
+
+        grid.add(oddOneOutBtn, 0, 1);
+        grid.add(quizzesBtn, 1, 1);
+        grid.add(balloonBtn, 2, 1);
+
+        grid.add(timedBtn, 0, 2);
+
+        VBox dashboardLayout = new VBox(30, title, grid);
+        dashboardLayout.setAlignment(Pos.CENTER);
 
         contentArea.getChildren().add(dashboardLayout);
 
+        // Attach CSS
+        if (!contentArea.getScene().getStylesheets().contains(getClass().getResource("profile.css").toExternalForm())) {
+            contentArea.getScene().getStylesheets().add(getClass().getResource("profile.css").toExternalForm());
+        }
     }
 
     @FXML
@@ -212,9 +243,6 @@ public class MainController {
 
         return new VBox(container);
     }
-
-
-
 
     @FXML
     private void showSettings() {
@@ -349,7 +377,6 @@ public class MainController {
         });
     }
 
-
     @FXML
     private void handleLogout(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("home-view.fxml"));
@@ -376,22 +403,15 @@ public class MainController {
                 letterController.setCurrentUserEmail(Session.getCurrentUserEmail());
             } else if (controller instanceof PopBalloonController popController) {
                 popController.setCurrentUserEmail(Session.getCurrentUserEmail());
-            }  else if (controller instanceof MemoryGameController memoryController) {
+            } else if (controller instanceof MemoryGameController memoryController) {
                 memoryController.setCurrentUserEmail(Session.getCurrentUserEmail());
-            } else if (controller instanceof MiniQuizController quizController) {
-                quizController.setCurrentUserEmail(Session.getCurrentUserEmail());
             } else if (controller instanceof TimedChallengeController timedController) {
                 timedController.setCurrentUserEmail(Session.getCurrentUserEmail());
             }
 
-            // Scene with CSS
-            Scene gameScene = new Scene(gameRoot, width, height);
-            gameScene.getStylesheets().add(getClass().getResource("styleGames.css").toExternalForm());
-
-            // Create Stage and show
             Stage gameStage = new Stage();
-            gameStage.setTitle("MiniMinds - " + title);
-            gameStage.setScene(gameScene);
+            gameStage.setTitle(title);
+            gameStage.setScene(new Scene(gameRoot, width, height));
             gameStage.show();
 
         } catch (IOException e) {
