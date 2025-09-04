@@ -1,5 +1,6 @@
 package com.example.miniminds;
 
+import javafx.animation.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -9,9 +10,6 @@ import javafx.scene.text.Text;
 import java.util.Random;
 import javafx.scene.shape.Circle;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.Timeline;
 import javafx.util.Duration;
 
 
@@ -103,6 +101,8 @@ public class PopBalloonController {
         balloonCircle3.setOnMouseClicked(e -> checkBalloon(balloonNum3));
     }
 
+
+
     // 🔹 Start a new round with fresh numbers
     private void generateRound() {
         if (remaining <= 0) {
@@ -157,17 +157,55 @@ public class PopBalloonController {
 
         int clickedNum = Integer.parseInt(clickedBalloon.getText());
         popSound.play();
+
+        Circle associatedCircle = getCircleForText(clickedBalloon);
+
+
         if (clickedNum == targetNumber) {
             correctSound.play();
             score++;
         } else {
             wrongSound.play();
         }
+
+        // Fade out the balloon
+        FadeTransition fade = new FadeTransition(Duration.millis(500), associatedCircle);
+        fade.setFromValue(1.0);
+        fade.setToValue(0.0);
+        fade.play();
+
+        // Also fade out the number
+        FadeTransition fadeText = new FadeTransition(Duration.millis(500), clickedBalloon);
+        fadeText.setFromValue(1.0);
+        fadeText.setToValue(0.0);
+        fadeText.play();
+
         remaining--;
 
         updateLabels();
-        generateRound();
+
+        // Pause for 1 second before generating the next round
+        PauseTransition pause = new PauseTransition(Duration.seconds(1));
+        pause.setOnFinished(e -> {
+            // Reset faded balloons back to visible
+            balloonCircle1.setOpacity(1);
+            balloonCircle2.setOpacity(1);
+            balloonCircle3.setOpacity(1);
+            balloonNum1.setOpacity(1);
+            balloonNum2.setOpacity(1);
+            balloonNum3.setOpacity(1);
+
+            generateRound();
+        });
+        pause.play();
     }
+
+    private Circle getCircleForText(Text balloonText) {
+        if (balloonText == balloonNum1) return balloonCircle1;
+        if (balloonText == balloonNum2) return balloonCircle2;
+        return balloonCircle3;
+    }
+
 
     // 🔹 Update score and remaining labels
     private void updateLabels() {

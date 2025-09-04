@@ -18,6 +18,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 public class MainController {
 
@@ -68,7 +69,7 @@ public class MainController {
 
         Button balloonBtn = new Button("Pop the Balloon");
         balloonBtn.setStyle("-fx-font-size: 16px; -fx-padding: 10 20;");
-        balloonBtn.setOnAction(e -> openGameWindow("pop-balloon.fxml", "Pop the Balloon", 700, 500));
+        balloonBtn.setOnAction(e -> openGameWindow("pop-balloon.fxml", "Pop the Balloon", 838, 518));
 
         Button timedBtn = new Button("Timed Challenge");
         timedBtn.setStyle("-fx-font-size: 16px; -fx-padding: 10 20;");
@@ -88,8 +89,8 @@ public class MainController {
 
         User user = DatabaseHelper.getUserByEmail(Session.getCurrentUserEmail());
 
-        VBox profileBox = new VBox(20);
-        profileBox.setStyle("-fx-padding: 20; -fx-background-color: #f0f8ff;");
+        VBox profileBox = new VBox(25);
+        profileBox.setStyle("-fx-padding: 20; -fx-background-color: #f9f9f9;");
 
         // ===== User Info =====
         ImageView avatar = new ImageView();
@@ -99,63 +100,104 @@ public class MainController {
         avatar.setFitHeight(120);
         avatar.setFitWidth(120);
         avatar.setPreserveRatio(true);
+        avatar.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 5);");
 
-        Text nameText = new Text("Name: " + user.getName());
-        Text emailText = new Text("Email: " + user.getEmail());
+        Text nameText = new Text(user.getName());
+        nameText.setStyle("-fx-font-size: 22px; -fx-font-weight: bold; -fx-fill: #333;");
+        Text emailText = new Text(user.getEmail());
+        emailText.setStyle("-fx-font-size: 16px; -fx-fill: #555;");
         Text ageText = new Text("Age: " + user.getAge());
+        ageText.setStyle("-fx-font-size: 16px; -fx-fill: #555;");
 
         VBox userInfoBox = new VBox(5, nameText, emailText, ageText);
         userInfoBox.setStyle("-fx-padding: 10;");
 
-        profileBox.getChildren().addAll(avatar, userInfoBox, new Text("Game Performance:"));
+        profileBox.getChildren().addAll(avatar, userInfoBox, createSectionTitle("Game Performance"));
 
-        // ===== Game Performance Bars =====
-        profileBox.getChildren().addAll(
-                createGameLevelBar("Math Quiz", user.getMath()),
-                createGameLevelBar("Letter-to-Image", user.getSpelling()),
-                createGameLevelBar("Memory Card", user.getMemory()),
-                createGameLevelBar("Odd One Out", user.getIq()),
-                createGameLevelBar("Number Game", user.getNumbers()),
-                createGameLevelBar("Timed Challenge", user.getTimed())
-        );
+        // ===== Game Performance Columns =====
+        HBox gamesColumns = new HBox(50);
+        VBox leftCol = new VBox(20);
+        VBox rightCol = new VBox(20);
+
+        String[][] games = {
+                {"Math Quiz", String.valueOf(user.getMath()), "/com/example/miniminds/images/math.png"},
+                {"Letter-to-Image", String.valueOf(user.getSpelling()), "/com/example/miniminds/images/spelling.png"},
+                {"Match the Card", String.valueOf(user.getMemory()), "/com/example/miniminds/images/memory.png"},
+                {"Odd One Out", String.valueOf(user.getIq()), "/com/example/miniminds/images/iq.png"},
+                {"Pop the Balloon", String.valueOf(user.getNumbers()), "/com/example/miniminds/images/numbers.png"},
+                {"Timed Challenge", String.valueOf(user.getTimed()), "/com/example/miniminds/images/timed.png"}
+        };
+
+        for (int i = 0; i < games.length; i++) {
+            VBox gameBar = createModernGameBar(games[i][0], Integer.parseInt(games[i][1]), games[i][2]);
+            if (i < 3) leftCol.getChildren().add(gameBar);
+            else rightCol.getChildren().add(gameBar);
+        }
+
+        gamesColumns.getChildren().addAll(leftCol, rightCol);
+        profileBox.getChildren().add(gamesColumns);
 
         // ===== Average Level =====
         double avgLevel = user.getAverageLevel();
-        Text avgText = new Text("Average Level: " + String.format("%.1f", avgLevel));
-        ProgressBar avgBar = new ProgressBar(avgLevel / 10.0); // normalize 0–1
+        Text avgText = new Text(String.format("%.1f", avgLevel));
+        avgText.setStyle("-fx-font-size: 18px; -fx-fill: #333;");
+        ProgressBar avgBar = new ProgressBar(avgLevel / 10.0);
         avgBar.setPrefWidth(300);
-        avgBar.setStyle("-fx-accent: #2196f3; -fx-pref-height: 20px;"); // blue bar
+        avgBar.setPrefHeight(20);
+        avgBar.setStyle(
+                "-fx-accent: linear-gradient(to right, #4caf50, #81c784);" +
+                        "-fx-background-insets: 0; -fx-background-radius: 10; -fx-border-radius: 10;"
+        );
 
-        VBox avgBox = new VBox(5, new Text("Average Level:"), avgText, avgBar);
+        VBox avgBox = new VBox(5, createSectionTitle("Average Level"), avgText, avgBar);
         avgBox.setStyle("-fx-padding: 10;");
-
         profileBox.getChildren().add(avgBox);
 
         contentArea.getChildren().add(profileBox);
     }
 
-    // ===== Helper to create game bars =====
-    private VBox createGameLevelBar(String gameName, int score) {
-        VBox box = new VBox(5);
-
-        // Game label
-        Text label = new Text(gameName + " (Score: " + score + ")");
-
-        // Level calculation
-        int currentLevel = score / 20;
-        double progress = (score % 20) / 20.0; // progress toward next level (0–1)
-
-        // Progress bar
-        ProgressBar bar = new ProgressBar(progress);
-        bar.setPrefWidth(300);
-        bar.setStyle("-fx-accent: #4caf50; -fx-pref-height: 20px;"); // green
-
-        // Level text
-        Text levelText = new Text("Level " + currentLevel);
-
-        box.getChildren().addAll(label, bar, levelText);
-        return box;
+    // ===== Helper for section titles =====
+    private Text createSectionTitle(String text) {
+        Text t = new Text(text);
+        t.setStyle("-fx-font-size: 20px; -fx-font-weight: bold; -fx-fill: #444;");
+        return t;
     }
+
+    // ===== Modern Game Bar with Icon and styled ProgressBar =====
+    private VBox createModernGameBar(String gameName, int score, String iconPath) {
+        HBox container = new HBox(15);
+        container.setStyle("-fx-alignment: center-left;");
+
+        ImageView icon = new ImageView();
+        InputStream is = getClass().getResourceAsStream(iconPath);
+        if (is != null) {
+            icon.setImage(new Image(is));
+            icon.setFitHeight(30);
+            icon.setFitWidth(30);
+            icon.setPreserveRatio(true);
+            icon.setStyle("-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 5, 0, 0, 1);");
+        }
+
+        VBox infoBox = new VBox(3);
+        Text label = new Text(gameName + " (Score: " + score + ")");
+        label.setStyle("-fx-font-size: 16px; -fx-font-weight: bold; -fx-fill: #333;");
+
+        int currentLevel = score / 20;
+        double progress = (score % 20) / 20.0;
+        ProgressBar bar = new ProgressBar(progress);
+        bar.setPrefWidth(200);
+        bar.setPrefHeight(15);
+
+        Text levelText = new Text("Level " + currentLevel);
+        levelText.setStyle("-fx-font-size: 14px; -fx-fill: #555;");
+
+        infoBox.getChildren().addAll(label, bar, levelText);
+        container.getChildren().addAll(icon, infoBox);
+
+        return new VBox(container);
+    }
+
+
 
 
     @FXML
@@ -170,6 +212,7 @@ public class MainController {
         Scene scene = new Scene(loader.load());
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setScene(scene);
+        stage.setFullScreen(true);
         stage.show();
         System.out.println("User logged out.");
     }
@@ -190,13 +233,6 @@ public class MainController {
             } else if (controller instanceof PopBalloonController popController) {
                 popController.setCurrentUserEmail(Session.getCurrentUserEmail());
             }
-//            else if (controller instanceof MiniQuizController quizController) {
-//                quizController.setCurrentUserEmail(Session.getCurrentUserEmail());
-//            } else if (controller instanceof TimedChallengeController timedController) {
-//                timedController.setCurrentUserEmail(Session.getCurrentUserEmail());
-//            } else if (controller instanceof MemoryGameController memoryController) {
-//                memoryController.setCurrentUserEmail(Session.getCurrentUserEmail());
-//            }
 
             // Scene with CSS
             Scene gameScene = new Scene(gameRoot, width, height);

@@ -1,0 +1,9 @@
+/* profile.css */
+.progress-bar .bar {
+    -fx-background-color: linear-gradient(to right, #4caf50, #81c784);
+    -fx-background-radius: 8;
+}
+.progress-bar {
+    -fx-background-radius: 8;
+    -fx-pref-height: 15px;
+}

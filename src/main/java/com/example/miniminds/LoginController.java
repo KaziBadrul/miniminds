@@ -45,8 +45,10 @@ public class LoginController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("main-view.fxml"));
             try {
                 Scene scene = new Scene(loader.load());
+                scene.getStylesheets().add(getClass().getResource("/com/example/miniminds/profile.css").toExternalForm());
                 Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 stage.setScene(scene);
+                stage.setFullScreen(true);
                 stage.show();
             } catch (IOException e) {
                 showAlert("Error loading main view.");

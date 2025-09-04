@@ -8,23 +8,23 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox alignment="CENTER" prefHeight="720" prefWidth="1280" spacing="20" style="-fx-background-color: #28a745;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.miniminds.LoginController">
+<VBox alignment="CENTER" spacing="20" style="-fx-background-color: #28a745;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.miniminds.LoginController">
 
     <Text fill="WHITE" style="-fx-font-size: 32px;" text="Login Page" textAlignment="CENTER">
       <font>
          <Font name="Calibri Bold" size="46.0" />
       </font></Text>
-    <TextField fx:id="emailField" maxWidth="600.0" prefWidth="300" promptText="Email">
+    <TextField fx:id="emailField" maxWidth="600.0"  promptText="Email">
       <VBox.margin>
          <Insets left="20.0" right="20.0" />
       </VBox.margin></TextField>
-    <PasswordField fx:id="passwordField" maxWidth="600.0" prefWidth="300" promptText="Password">
+    <PasswordField fx:id="passwordField" maxWidth="600.0"  promptText="Password">
       <VBox.margin>
          <Insets left="20.0" right="20.0" />
       </VBox.margin></PasswordField>
 
-    <Button onAction="#handleLogin" prefWidth="150" style="-fx-background-color: #4c008a; -fx-text-fill: white; -fx-font-size: 16px; -fx-background-radius: 20;" text="Login" />
+    <Button onAction="#handleLogin" maxWidth="150" style="-fx-background-color: #4c008a; -fx-text-fill: white; -fx-font-size: 16px; -fx-background-radius: 20;" text="Login" />
 
-    <Button onAction="#handleBack" prefWidth="150" style="-fx-background-color: #FFA500; -fx-text-fill: white; -fx-font-size: 16px; -fx-background-radius: 20;" text="Back" />
+    <Button onAction="#handleBack" maxWidth="150" style="-fx-background-color: #FFA500; -fx-text-fill: white; -fx-font-size: 16px; -fx-background-radius: 20;" text="Back" />
 
 </VBox>
