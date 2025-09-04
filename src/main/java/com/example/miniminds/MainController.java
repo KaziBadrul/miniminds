@@ -33,7 +33,7 @@ public class MainController {
         // Memory Card Game (Under Development) 🏗️
         // Odd One Out Game (Need Design) 👗
         // Mini Quizzes
-        // Pop the Balloon Game (Under Development) 🏗️
+        // Pop the Balloon Game
         // Timed Challenges
 
         // Other Features
