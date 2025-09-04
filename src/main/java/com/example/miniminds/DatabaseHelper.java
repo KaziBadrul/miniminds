@@ -96,6 +96,37 @@ public class DatabaseHelper {
         }
     }
 
+    // Get Letter to Image score (stored in spelling column)
+    public static int getLetterToImageScore(String email) {
+        String sql = "SELECT spelling FROM users WHERE email = ?";
+        try (Connection conn = DriverManager.getConnection(DB_URL);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, email);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) return rs.getInt("spelling");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    // Update Letter to Image score (stored in spelling column)
+    public static void updateLetterToImageScore(String email, int newScore) {
+        int previousScore = getLetterToImageScore(email);
+        int updatedScore = previousScore + (int) Math.ceil(newScore / 2.0);
+
+        String sql = "UPDATE users SET spelling = ? WHERE email = ?";
+        try (Connection conn = DriverManager.getConnection(DB_URL);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, updatedScore);
+            pstmt.setString(2, email);
+            pstmt.executeUpdate();
+            System.out.println("✅ Letter to Image score updated in Spelling: " + updatedScore);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     // Get Odd One Out score (stored in iq column)
     public static int getOddOneOutScore(String email) {
         String sql = "SELECT iq FROM users WHERE email = ?";

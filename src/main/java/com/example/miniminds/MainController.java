@@ -25,7 +25,7 @@ public class MainController {
 
         // Games Overview
         // Math Game (Under Development) 🏗️
-        // Letter to Image Game
+        // Letter to Image Game (Under Development) 🏗️
         // Memory Card Game
         // Odd One Out Game (Under Development) 🏗️
         // Mini Quizzes
@@ -49,6 +49,10 @@ public class MainController {
         memoryGameBtn.setStyle("-fx-font-size: 16px; -fx-padding: 10 20;");
         memoryGameBtn.setOnAction(e -> openGameWindow("memory-game.fxml", "Memory Game", 800, 600));
 
+        Button letterToImageBtn = new Button("Play Letter-To-Image");
+        letterToImageBtn.setStyle("-fx-font-size: 16px; -fx-padding: 10 20;");
+        letterToImageBtn.setOnAction(e -> openGameWindow("letter-to-image.fxml", "Letter To Image", 800, 600));
+
         Button oddOneOutBtn = new Button("Play Odd One Out");
         oddOneOutBtn.setStyle("-fx-font-size: 16px; -fx-padding: 10 20;");
         oddOneOutBtn.setOnAction(e -> openGameWindow("odd-one-out.fxml", "Odd One Out", 700, 500));
@@ -65,7 +69,7 @@ public class MainController {
         timedBtn.setStyle("-fx-font-size: 16px; -fx-padding: 10 20;");
         timedBtn.setOnAction(e -> openGameWindow("timed-challenge.fxml", "Timed Challenge", 700, 500));
 
-        VBox dashboardLayout = new VBox(20, title, mathQuizBtn, memoryGameBtn, oddOneOutBtn, quizzesBtn, balloonBtn, timedBtn);
+        VBox dashboardLayout = new VBox(20, title, mathQuizBtn, memoryGameBtn, letterToImageBtn, oddOneOutBtn, quizzesBtn, balloonBtn, timedBtn);
         dashboardLayout.setAlignment(Pos.CENTER);
 
 
@@ -106,7 +110,9 @@ public class MainController {
                 mathController.setCurrentUserEmail(Session.getCurrentUserEmail());
             } else if (controller instanceof OddOneOutController oddController) {
                 oddController.setCurrentUserEmail(Session.getCurrentUserEmail());
-            }
+            } else if (controller instanceof LetterToImageController letterController) {
+                letterController.setCurrentUserEmail(Session.getCurrentUserEmail());
+            } // Add other controllers as needed
 
             // Scene with CSS
             Scene gameScene = new Scene(gameRoot, width, height);
