@@ -1,18 +1,20 @@
 package com.example.miniminds;
 
-import javafx.application.Platform;
+import javafx.animation.FillTransition;
+import javafx.animation.PauseTransition;
+import javafx.animation.SequentialTransition;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
 
 import java.net.URL;
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.Set;
 
 public class MemoryGameController {
 
@@ -23,19 +25,20 @@ public class MemoryGameController {
     @FXML private Rectangle rect1, rect2, rect3, rect4, rect5, rect6;
 
     private List<Rectangle> allRects;
-    private Set<Rectangle> targetSet;
-    private Set<Rectangle> clickedSet;
+    private List<Rectangle> targetSequence;   // sequence to follow
+    private List<Rectangle> clickedSequence;  // player's clicks
     private int remaining = 20;
     private int score = 0;
+    private boolean inputEnabled = false; // disable clicks during sequence
 
-    // === Added: Media setup ===
+    // === Sound setup ===
     private Media dingSound;
 
     @FXML
     public void initialize() {
         allRects = List.of(rect1, rect2, rect3, rect4, rect5, rect6);
 
-        // Load sound (from resources)
+        // Load sound
         URL soundURL = getClass().getResource("/com/example/miniminds/Sounds/rectangle-ding.mp3");
         if (soundURL != null) {
             dingSound = new Media(soundURL.toExternalForm());
@@ -49,53 +52,67 @@ public class MemoryGameController {
     }
 
     private void startRound() {
-        clickedSet = new HashSet<>();
+        clickedSequence = new ArrayList<>();
         messageLabel.setText("");
+        inputEnabled = false; // lock input until sequence ends
 
         for (Rectangle rect : allRects) {
             rect.setFill(Color.web("#524ac2"));
         }
 
-        // pick random targets
-        targetSet = new HashSet<>();
+        // pick random sequence length
+        targetSequence = new ArrayList<>();
         Random rand = new Random();
-        int count = 1 + rand.nextInt(allRects.size());
-        while (targetSet.size() < count) {
-            targetSet.add(allRects.get(rand.nextInt(allRects.size())));
+        int count = 2 + rand.nextInt(3); // sequence length between 2 and 4 for kids
+        for (int i = 0; i < count; i++) {
+            targetSequence.add(allRects.get(rand.nextInt(allRects.size())));
         }
 
-        // show them green briefly + play sound
-        for (Rectangle rect : targetSet) {
-            rect.setFill(Color.GREEN);
-            playSound(); // <-- Play ding when rectangles light up
+        playSequenceSmooth();
+    }
+
+    private void playSequenceSmooth() {
+        SequentialTransition sequenceAnim = new SequentialTransition();
+
+        for (Rectangle rect : targetSequence) {
+            FillTransition highlight = new FillTransition(Duration.millis(500), rect, Color.web("#524ac2"), Color.GREEN);
+            FillTransition back = new FillTransition(Duration.millis(500), rect, Color.GREEN, Color.web("#524ac2"));
+
+            highlight.setOnFinished(e -> playSound());
+
+            sequenceAnim.getChildren().addAll(highlight, back, new PauseTransition(Duration.millis(200)));
         }
 
-        new Thread(() -> {
-            try { Thread.sleep(1000); } catch (InterruptedException ignored) {}
-            Platform.runLater(() -> {
-                for (Rectangle rect : allRects) {
-                    rect.setFill(Color.web("#524ac2"));
-                }
-            });
-        }).start();
+        sequenceAnim.setOnFinished(e -> inputEnabled = true); // unlock clicks after sequence
+        sequenceAnim.play();
     }
 
     private void handleClick(Rectangle rect) {
-        if (remaining <= 0 || targetSet == null) return;
+        if (!inputEnabled || remaining <= 0 || targetSequence == null) return;
 
-        clickedSet.add(rect);
-        rect.setFill(Color.LIGHTBLUE);
+        clickedSequence.add(rect);
+        playSound();
 
-        playSound(); // <-- Play ding when user clicks
+        // give click feedback (flash yellow briefly)
+        FillTransition clickAnim = new FillTransition(Duration.millis(200), rect, Color.web("#524ac2"), Color.YELLOW);
+        FillTransition back = new FillTransition(Duration.millis(200), rect, Color.YELLOW, Color.web("#524ac2"));
+        new SequentialTransition(clickAnim, back).play();
 
-        if (clickedSet.size() == targetSet.size()) {
-            evaluateRound();
+        // check if current click is correct
+        int currentIndex = clickedSequence.size() - 1;
+        if (clickedSequence.get(currentIndex) != targetSequence.get(currentIndex)) {
+            endRound(false);
+            return;
+        }
+
+        // if sequence complete
+        if (clickedSequence.size() == targetSequence.size()) {
+            endRound(true);
         }
     }
 
-    private void evaluateRound() {
-        boolean won = clickedSet.equals(targetSet);
-
+    private void endRound(boolean won) {
+        inputEnabled = false;
         remaining--;
         remainingLabel.setText("Remaining : " + remaining);
 
@@ -107,15 +124,14 @@ public class MemoryGameController {
             messageLabel.setText("Nice try");
         }
 
-        new Thread(() -> {
-            try { Thread.sleep(2000); } catch (InterruptedException ignored) {}
-            Platform.runLater(() -> {
-                if (remaining > 0) startRound();
-            });
-        }).start();
+        PauseTransition delay = new PauseTransition(Duration.seconds(2));
+        delay.setOnFinished(e -> {
+            if (remaining > 0) startRound();
+        });
+        delay.play();
     }
 
-    // === Helper to play sound ===
+    // === Play sound ===
     private void playSound() {
         if (dingSound != null) {
             MediaPlayer mediaPlayer = new MediaPlayer(dingSound);
