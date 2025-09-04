@@ -1,5 +1,12 @@
 package com.example.miniminds;
 
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -8,14 +15,20 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.control.Spinner;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -208,6 +221,134 @@ public class MainController {
         contentArea.getChildren().clear();
         contentArea.getChildren().add(new Text("Settings content goes here."));
     }
+
+    @FXML
+    private void showPomodoro() {
+        contentArea.getChildren().clear();
+
+        VBox root = new VBox(30);
+        root.setAlignment(Pos.CENTER);
+        root.setStyle("-fx-background-color: #144f21; -fx-padding: 40;");
+
+        Text timerText = new Text("25:00");
+        timerText.setStyle("-fx-fill: white; -fx-font-size: 48px; -fx-font-weight: bold;");
+
+        double radius = 120;
+        Circle progressCircle = new Circle(radius);
+        progressCircle.setFill(Color.TRANSPARENT);
+        progressCircle.setStroke(Color.web("#4CAF50"));
+        progressCircle.setStrokeWidth(12);
+        double circumference = 2 * Math.PI * radius;
+        progressCircle.getStrokeDashArray().add(circumference);
+        progressCircle.setStrokeDashOffset(0);
+
+        StackPane circleStack = new StackPane(progressCircle, timerText);
+
+        Label workLabel = new Label("Work (min):");
+        workLabel.setStyle("-fx-text-fill: white; -fx-font-size: 14px;");
+        Spinner<Integer> workSpinner = new Spinner<>(1, 120, 25);
+        workSpinner.setEditable(true);
+
+        Label breakLabel = new Label("Break (min):");
+        breakLabel.setStyle("-fx-text-fill: white; -fx-font-size: 14px;");
+        Spinner<Integer> breakSpinner = new Spinner<>(1, 60, 5);
+        breakSpinner.setEditable(true);
+
+        Button applyBtn = new Button("✔ Apply");
+        applyBtn.setStyle("-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-size: 14px; -fx-background-radius: 15;");
+
+        HBox settingsBox = new HBox(15, workLabel, workSpinner, breakLabel, breakSpinner, applyBtn);
+        settingsBox.setAlignment(Pos.CENTER);
+
+        Button startPauseBtn = new Button("▶ Start");
+        startPauseBtn.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 18px; -fx-background-radius: 20;");
+        Button resetBtn = new Button("⟲ Reset");
+        resetBtn.setStyle("-fx-background-color: #FF5722; -fx-text-fill: white; -fx-font-size: 18px; -fx-background-radius: 20;");
+
+        HBox buttonBox = new HBox(20, startPauseBtn, resetBtn);
+        buttonBox.setAlignment(Pos.CENTER);
+
+        root.getChildren().addAll(circleStack, buttonBox, settingsBox);
+        contentArea.getChildren().add(root);
+
+        // --- Timer Logic ---
+        IntegerProperty workDuration = new SimpleIntegerProperty(workSpinner.getValue() * 60);
+        IntegerProperty breakDuration = new SimpleIntegerProperty(breakSpinner.getValue() * 60);
+        IntegerProperty timeLeft = new SimpleIntegerProperty(workDuration.get());
+
+        BooleanProperty running = new SimpleBooleanProperty(false);
+        BooleanProperty isWorkSession = new SimpleBooleanProperty(true);
+
+        // FIX: use wrapper for timeline
+        final Timeline[] timeline = new Timeline[1];
+
+        Runnable createTimeline = () -> {
+            timeline[0] = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
+                timeLeft.set(timeLeft.get() - 1);
+
+                int minutes = timeLeft.get() / 60;
+                int seconds = timeLeft.get() % 60;
+                timerText.setText(String.format("%02d:%02d", minutes, seconds));
+
+                double progress = (double) timeLeft.get() / (isWorkSession.get() ? workDuration.get() : breakDuration.get());
+                progressCircle.setStrokeDashOffset(circumference * (1 - progress));
+
+                if (timeLeft.get() <= 0) {
+                    timeline[0].stop();
+                    running.set(false);
+                    if (isWorkSession.get()) {
+                        timerText.setText("Break Time!");
+                        timeLeft.set(breakDuration.get());
+                    } else {
+                        timerText.setText("Work Time!");
+                        timeLeft.set(workDuration.get());
+                    }
+                    isWorkSession.set(!isWorkSession.get());
+                    startPauseBtn.setText("▶ Start");
+                }
+            }));
+            timeline[0].setCycleCount(Animation.INDEFINITE);
+        };
+
+        createTimeline.run();
+
+        // Start/Pause button
+        startPauseBtn.setOnAction(e -> {
+            if (running.get()) {
+                timeline[0].stop();
+                startPauseBtn.setText("▶ Start");
+            } else {
+                timeline[0].play();
+                startPauseBtn.setText("⏸ Pause");
+            }
+            running.set(!running.get());
+        });
+
+        // Reset button
+        resetBtn.setOnAction(e -> {
+            timeline[0].stop();
+            running.set(false);
+            isWorkSession.set(true);
+            timeLeft.set(workDuration.get());
+            timerText.setText(String.format("%02d:00", workSpinner.getValue()));
+            progressCircle.setStrokeDashOffset(0);
+            startPauseBtn.setText("▶ Start");
+        });
+
+        // Apply button updates durations
+        applyBtn.setOnAction(e -> {
+            workDuration.set(workSpinner.getValue() * 60);
+            breakDuration.set(breakSpinner.getValue() * 60);
+            timeLeft.set(workDuration.get());
+            timerText.setText(String.format("%02d:00", workSpinner.getValue()));
+            progressCircle.setStrokeDashOffset(0);
+            isWorkSession.set(true);
+            timeline[0].stop();
+            running.set(false);
+            startPauseBtn.setText("▶ Start");
+        });
+    }
+
 
     @FXML
     private void handleLogout(ActionEvent event) throws IOException {
