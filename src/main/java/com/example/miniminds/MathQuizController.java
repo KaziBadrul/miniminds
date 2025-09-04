@@ -8,6 +8,9 @@ import javafx.scene.control.Label;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
+// AudioVisual
+import javafx.scene.media.AudioClip;
+
 import java.util.Random;
 
 public class MathQuizController {
@@ -25,6 +28,9 @@ public class MathQuizController {
     private int questionCount = 0;
     private final int TOTAL_QUESTIONS = 20;
 
+    private AudioClip correctSound;
+    private AudioClip wrongSound;
+
     private String currentUserEmail;
 
     public void setCurrentUserEmail(String email) {
@@ -35,6 +41,9 @@ public class MathQuizController {
 
     @FXML
     private void initialize() {
+        correctSound = new AudioClip(getClass().getResource("/com/example/miniminds/sounds/correct.wav").toExternalForm());
+        wrongSound = new AudioClip(getClass().getResource("/com/example/miniminds/sounds/wrong.wav").toExternalForm());
+
         scoreText.setText("Score: 0");
         remainingText.setText("Remaining: " + TOTAL_QUESTIONS);
         generateQuestion();
@@ -82,21 +91,26 @@ public class MathQuizController {
         answerBtn2.setDisable(true);
         answerBtn3.setDisable(true);
 
+        int time;
         if (chosen == correctAnswer) {
             score++;
             feedbackText.setText("✅ Correct!");
             feedbackText.setStyle("-fx-fill: green; -fx-font-size: 24px;");
             playConfettiEffect(clicked);
+            correctSound.play();
+            time = 1;
         } else {
-            feedbackText.setText("❌ Wrong!");
+            feedbackText.setText("❌ Wrong! Correct: " + correctAnswer);
             feedbackText.setStyle("-fx-fill: red; -fx-font-size: 24px;");
+            wrongSound.play();
+            time = 2;
         }
 
         scoreText.setText("Score: " + score);
         questionCount++;
 
         // Delay next question
-        PauseTransition pause = new PauseTransition(Duration.seconds(1));
+        PauseTransition pause = new PauseTransition(Duration.seconds(time));
         pause.setOnFinished(e -> generateQuestion());
         pause.play();
     }

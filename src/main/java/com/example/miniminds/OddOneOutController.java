@@ -12,6 +12,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+// AudioVisual
+import javafx.scene.media.AudioClip;
+
 public class OddOneOutController {
 
     @FXML private ImageView img1;
@@ -28,6 +31,9 @@ public class OddOneOutController {
     private List<String[]> questions;
     private String currentUserEmail;
     private int prevScore = 0;         // Score before this session
+
+    private AudioClip correctSound;
+    private AudioClip wrongSound;
 
     private static final String[][] BASE_QUESTIONS = {
             {"dog.png", "cat.png", "lion.png", "car.png"},
@@ -62,6 +68,16 @@ public class OddOneOutController {
         imgs[3] = img4;
 
         loadNextQuestion();
+    }
+
+    @FXML
+    private void initialize() {
+        correctSound = new AudioClip(getClass().getResource("/com/example/miniminds/sounds/correct.wav").toExternalForm());
+        wrongSound = new AudioClip(getClass().getResource("/com/example/miniminds/sounds/wrong.wav").toExternalForm());
+
+        feedbackText.setText("");
+        questionText.setText("Find the odd one out!");
+        remainingText.setText("Remaining: 20");
     }
 
     private List<String[]> generateQuestions(int totalQuestions) {
@@ -117,20 +133,25 @@ public class OddOneOutController {
         for (ImageView img : imgs) img.setDisable(true);
 
         String name = clickedImageName.replace(".png", "").replace("_", " ");
+        int time = 0;
         if (clickedIndex == oddIndex) {
             feedbackText.setText("✅ " + capitalize(name) + " is Correct!");
             feedbackText.setStyle("-fx-fill: green;");
+            correctSound.play();
+            time = 1;
             score++;
         } else {
             String correctName = questions.get(questionCount)[oddIndex].replace(".png","").replace("_"," ");
             feedbackText.setText("❌ " + capitalize(name) + " is Wrong! Correct: " + capitalize(correctName));
             feedbackText.setStyle("-fx-fill: red;");
+            wrongSound.play();
+            time = 2;
         }
 
         questionCount++;
         remainingText.setText("Remaining: " + (questions.size() - questionCount));
 
-        PauseTransition pause = new PauseTransition(Duration.seconds(1.2));
+        PauseTransition pause = new PauseTransition(Duration.seconds(time));
         pause.setOnFinished(e -> loadNextQuestion());
         pause.play();
     }

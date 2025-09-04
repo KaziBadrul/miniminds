@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<?import javafx.scene.control.Label?>
+<VBox alignment="CENTER" spacing="20" style="-fx-background-color: #28a745;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.miniminds.LetterToImageController">
+
+    <ImageView fx:id="imageView" fitHeight="200" fitWidth="200" preserveRatio="true" />
+
+    <HBox fx:id="lettersBox" alignment="CENTER" spacing="15" />
+
+    <Label fx:id="targetBox" text="Drop Here"
+           styleClass="drop-box"/>
+
+    <StackPane styleClass="feedback-box">
+        <Text fx:id="feedbackText" style="-fx-font-size: 20px;" styleClass="game-text-bold" />
+      <opaqueInsets>
+         <Insets left="20.0" right="20.0" />
+      </opaqueInsets>
+    </StackPane>
+    <Text fx:id="scoreText" styleClass="game-text-bold" style="-fx-font-size: 20px"/>
+    <Text fx:id="remainingText" styleClass="game-text-normal" style="-fx-font-size: 20px"/>
+
+</VBox>

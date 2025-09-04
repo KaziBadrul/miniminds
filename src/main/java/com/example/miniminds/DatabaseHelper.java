@@ -67,6 +67,36 @@ public class DatabaseHelper {
         }
     }
 
+    // Fetch user by email
+    public static User getUserByEmail(String email) {
+        String sql = "SELECT name, age, email, math, spelling, memory, iq, numbers, timed FROM users WHERE email = ?";
+        try (Connection conn = DriverManager.getConnection(DB_URL);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, email);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                User user = new User();
+                user.setName(rs.getString("name"));
+                user.setAge(rs.getInt("age"));
+                user.setEmail(rs.getString("email"));
+                user.setMath(rs.getInt("math"));
+                user.setSpelling(rs.getInt("spelling"));
+                user.setMemory(rs.getInt("memory"));
+                user.setIq(rs.getInt("iq"));
+                user.setNumbers(rs.getInt("numbers"));
+                user.setTimed(rs.getInt("timed"));
+                return user;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
     // Get math score for a user
     public static int getMathScore(String email) {
         String sql = "SELECT math FROM users WHERE email = ?";
@@ -93,6 +123,37 @@ public class DatabaseHelper {
             pstmt.executeUpdate();
         } catch (SQLException e) {
             System.out.println("❌ Error updating math score: " + e.getMessage());
+        }
+    }
+
+    // Get Letter to Image score (stored in spelling column)
+    public static int getLetterToImageScore(String email) {
+        String sql = "SELECT spelling FROM users WHERE email = ?";
+        try (Connection conn = DriverManager.getConnection(DB_URL);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, email);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) return rs.getInt("spelling");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    // Update Letter to Image score (stored in spelling column)
+    public static void updateLetterToImageScore(String email, int newScore) {
+        int previousScore = getLetterToImageScore(email);
+        int updatedScore = previousScore + (int) Math.ceil(newScore / 2.0);
+
+        String sql = "UPDATE users SET spelling = ? WHERE email = ?";
+        try (Connection conn = DriverManager.getConnection(DB_URL);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, updatedScore);
+            pstmt.setString(2, email);
+            pstmt.executeUpdate();
+            System.out.println("✅ Letter to Image score updated in Spelling: " + updatedScore);
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
