@@ -20,7 +20,11 @@ public class DatabaseHelper {
                 memory INTEGER DEFAULT 0,
                 iq INTEGER DEFAULT 0,
                 numbers INTEGER DEFAULT 0,
-                timed INTEGER DEFAULT 0
+                timed INTEGER DEFAULT 0,
+                background INTEGER DEFAULT 0,
+                badges TEXT,
+                parent TEXT,
+                kid TEXT
             );
         """;
 
@@ -273,5 +277,54 @@ public class DatabaseHelper {
         }
     }
 
+    public static void updateBackground(String email, int backgroundId) {
+        String sql = "UPDATE users SET background = ? WHERE email = ?";
+        try (Connection conn = DriverManager.getConnection(DB_URL); PreparedStatement pstmt = conn.prepareStatement(sql) ) {
+            pstmt.setInt(1, backgroundId);
+            pstmt.setString(2, email);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
+    public static int getBackground(String email) {
+        String sql = "SELECT background FROM users WHERE email = ?";
+        try (Connection conn = DriverManager.getConnection(DB_URL);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, email);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("background");
+            }
+        } catch (SQLException e) {
+            System.out.println("❌ Error getting background: " + e.getMessage());
+        }
+        return 0;
+    }
+
+    public static String getBadges(String email) {
+        String sql = "SELECT badges FROM users WHERE email = ?";
+        try (Connection conn = DriverManager.getConnection(DB_URL); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, email);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return rs.getString("badges");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static void updateBadges(String email, String petName) {
+        String sql = "UPDATE users SET badges = ? WHERE email = ?";
+        try (Connection conn = DriverManager.getConnection(DB_URL); PreparedStatement pstmt = conn.prepareStatement(sql) ) {
+            pstmt.setString(1, petName);
+            pstmt.setString(2, email);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }
