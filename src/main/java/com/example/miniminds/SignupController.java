@@ -77,7 +77,12 @@ public class SignupController {
         String hashedPassword = hashPassword(password);
 
         DatabaseHelper.insertUser(name, age, email, hashedPassword, category);
-//        DatabaseHelper.updateMathScore(email, 150);
+        DatabaseHelper.updateMathScore(email, 150);
+        DatabaseHelper.updateOddOneOutScore(email, 150);
+        DatabaseHelper.updateBalloonScore(email, 150);
+        DatabaseHelper.updateMemoryScore(email, 150);
+        DatabaseHelper.updateLetterToImageScore(email, 150);
+        DatabaseHelper.updateTimedScore(email, 150);
         showAlert("Signup successful!");
     }
 

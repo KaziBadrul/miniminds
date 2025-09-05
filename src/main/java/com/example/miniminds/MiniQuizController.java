@@ -123,6 +123,7 @@ public class MiniQuizController {
         List<Question> qs = new ArrayList<>();
 
         qs.add(new Question("What color is the sky?", List.of("Blue", "Green", "Red", "Yellow"), "Blue"));
+        qs.add(new Question("Who is the best faculty of IUT?", List.of("Ishmam Tashdeed", "IT", "Ishmam Sir", "Tashdeed Sir"), "Ishmam Tashdeed"));
         qs.add(new Question("How many legs does a cat have?", List.of("2", "4", "6", "8"), "4"));
         qs.add(new Question("What is 2 + 3?", List.of("4", "5", "6", "7"), "5"));
         qs.add(new Question("Which animal says 'Moo'?", List.of("Dog", "Cat", "Cow", "Sheep"), "Cow"));
