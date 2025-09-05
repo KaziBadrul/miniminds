@@ -82,7 +82,7 @@ public class MathQuizController {
         }
         if (userLevel > 5) {
             int modLevel = userLevel % 10;
-            if (modLevel == 0) modLevel = 10;  // ensure it's not zero
+            if (modLevel == 0) modLevel = userLevel / 10;  // ensure it's not zero
             int a = random.nextInt(10 * modLevel) + 1;
             int b = random.nextInt(10 * modLevel) + 1;
             correctAnswer = a * b;

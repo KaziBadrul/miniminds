@@ -77,6 +77,7 @@ public class SignupController {
         String hashedPassword = hashPassword(password);
 
         DatabaseHelper.insertUser(name, age, email, hashedPassword, category);
+//        DatabaseHelper.updateMathScore(email, 150);
         showAlert("Signup successful!");
     }
 
@@ -99,6 +100,7 @@ public class SignupController {
     private void handleBack(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("home-view.fxml"));
         Scene scene = new Scene(loader.load());
+        scene.getStylesheets().add(getClass().getResource("mainStyle.css").toExternalForm());
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setScene(scene);
         stage.show();

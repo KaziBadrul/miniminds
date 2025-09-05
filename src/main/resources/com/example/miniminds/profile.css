@@ -42,3 +42,11 @@
     -fx-padding: 10px;
     -fx-font-family: "Consolas";
 }
+
+.sidebar {
+    -fx-padding: 20;
+    -fx-background-image: url("images/background1.png");
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}

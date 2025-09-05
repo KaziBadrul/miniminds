@@ -1,42 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
-<?import javafx.geometry.Insets?>
-<?import javafx.geometry.Pos?>
+<?import javafx.scene.shape.Rectangle?>
 
-<VBox xmlns="http://javafx.com/javafx"
-      xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.example.miniminds.HomeController"
-      alignment="CENTER"
-      spacing="20"
-      prefWidth="1280"
-      prefHeight="720"
-      style="-fx-background-color: #007A3D;">
+<AnchorPane style="-fx-background-color: #3bed64;" prefHeight="1080" prefWidth="1920"
+            xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.example.miniminds.HomeController">
 
-  <!-- App Title -->
-  <Text text="MiniMinds" fill="white">
-    <font>
-      <Font size="48" />
-    </font>
-  </Text>
+  <!-- Centered VBox -->
+  <VBox fx:id="centerVBox" alignment="CENTER" spacing="20"
+        prefWidth="400" prefHeight="400"
+        AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0"
+        AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
 
-  <!-- Login Button -->
-  <Button fx:id="loginButton"
-          text="Login"
-          prefWidth="200"
-          prefHeight="40"
-          onAction="#handleLogin"
-          style="-fx-background-color: #FFA500; -fx-text-fill: white; -fx-font-size: 18px; -fx-background-radius: 20;" />
+    <!-- Logo -->
+    <ImageView fx:id="logoImage" fitHeight="130.0" fitWidth="454.0" preserveRatio="true">
+      <image>
+        <Image url="@images/minimindsLogoTrans.png" />
+      </image>
+      <clip>
+        <Rectangle arcHeight="50" arcWidth="50" height="400" width="400"/>
+      </clip>
+    </ImageView>
 
-  <!-- Signup Button -->
-  <Button fx:id="signupButton"
-          text="Signup"
-          prefWidth="200"
-          prefHeight="40"
-          onAction="#handleSignup"
-          style="-fx-background-color: #FFA500; -fx-text-fill: white; -fx-font-size: 18px; -fx-background-radius: 20;" />
+    <!-- Buttons -->
+    <Button fx:id="loginButton" onAction="#handleLogin" prefHeight="80" prefWidth="400" styleClass="button-green" text="Login"/>
+    <Button fx:id="signupButton" onAction="#handleSignup" prefHeight="80" prefWidth="400" styleClass="button-green" text="Signup"/>
+  </VBox>
 
-</VBox>
+  <!-- Decorative Images -->
+  <ImageView fitHeight="397.0" fitWidth="422.0" layoutY="400.0" pickOnBounds="true" preserveRatio="true">
+    <image>
+      <Image url="@images/rocket1.png" />
+    </image>
+  </ImageView>
+
+  <ImageView fitHeight="367.0" fitWidth="388.0" layoutX="1000.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
+    <image>
+      <Image url="@images/gamesMenu.png" />
+    </image>
+  </ImageView>
+
+</AnchorPane>
+

@@ -18,6 +18,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.media.AudioClip;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
@@ -28,14 +29,46 @@ import javafx.scene.effect.DropShadow;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
+import java.util.List;
 
 public class MainController {
 
     @FXML
     private VBox contentArea;
 
+    private AudioClip clickSound;
+    private AudioClip gameStart;
+
+    @FXML
+    private ImageView menuImage;
+
+    @FXML
+    private void initialize() {
+        // Load sounds
+        clickSound = new AudioClip(getClass().getResource("/com/example/miniminds/sounds/clickMenu.wav").toExternalForm());
+        gameStart = new AudioClip(getClass().getResource("/com/example/miniminds/sounds/gameStart.wav").toExternalForm());
+
+        int bgId = DatabaseHelper.getBackground(Session.getCurrentUserEmail());
+        if (bgId == 0) {
+            rewardBox.setStyle("-fx-padding: 20; -fx-background-color: #28a745;");
+        }
+        else {
+            String imageName = "background" + bgId + ".png";
+            applyBackground(imageName);
+        }
+
+        String petImageName = DatabaseHelper.getBadges(Session.getCurrentUserEmail());
+        if (petImageName != null && !petImageName.isEmpty()) {
+            petImage.setImage(new Image(getClass().getResourceAsStream(
+                    "/com/example/miniminds/images/" + petImageName)));
+        }
+    }
+
     @FXML
     private void showDashboard() {
+        clickSound.play();
+        menuImage.setImage(new Image(getClass().getResourceAsStream("/com/example/miniminds/images/gamesMenu.png")));
         contentArea.getChildren().clear();
 
         // Title
@@ -134,6 +167,8 @@ public class MainController {
 
     @FXML
     private void showProfile() {
+        clickSound.play();
+        menuImage.setImage(new Image(getClass().getResourceAsStream("/com/example/miniminds/images/profileMenu.png")));
         contentArea.getChildren().clear();
 
         User user = DatabaseHelper.getUserByEmail(Session.getCurrentUserEmail());
@@ -247,13 +282,138 @@ public class MainController {
     }
 
     @FXML
-    private void showSettings() {
+    private void showRewards() {
+        clickSound.play();
+        menuImage.setImage(new Image(getClass().getResourceAsStream(
+                "/com/example/miniminds/images/settingsMenu.png")));
+
         contentArea.getChildren().clear();
-        contentArea.getChildren().add(new Text("Settings content goes here."));
+
+        VBox rewardsBox = new VBox(20);
+        rewardsBox.setStyle("-fx-padding: 20;");
+        rewardsBox.setAlignment(Pos.TOP_CENTER);
+
+        Label title = new Label("🎉 Rewards");
+        title.setStyle("-fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: #333;");
+
+        // --- Backgrounds Section ---
+        Label bgLabel = new Label("Unlocked Backgrounds (Based on Math Score 1-5):");
+        Label mathScoreLabel = new Label("Your Math Score: " + DatabaseHelper.getMathScore(Session.getCurrentUserEmail()));
+        bgLabel.setStyle("-fx-font-size: 20px; -fx-text-fill: #444;");
+        mathScoreLabel.setStyle("-fx-font-size: 20px; -fx-text-fill: #444;");
+
+        TilePane backgroundsPane = new TilePane();
+        backgroundsPane.setHgap(15);
+        backgroundsPane.setVgap(15);
+        backgroundsPane.setPrefColumns(3);
+        backgroundsPane.setAlignment(Pos.CENTER);
+
+        int score = DatabaseHelper.getMathScore(Session.getCurrentUserEmail());
+        int level = Math.max(1, score / 20);
+
+        for (int i = 1; i <= 5; i++) {
+            ImageView bg = new ImageView(new Image(getClass().getResourceAsStream(
+                    "/com/example/miniminds/images/background" + i + ".png")));
+
+
+            bg.setFitWidth(150);
+            bg.setFitHeight(100);
+
+            if (i <= level) {
+                bg.setOpacity(1.0);
+                int bgId = i; // capture for lambda
+                bg.setOnMouseClicked(e -> {
+                    String imageName = "background" + bgId + ".png";
+                    applyBackground(imageName);
+                    // save selected background in DB
+                    DatabaseHelper.updateBackground(Session.getCurrentUserEmail(), bgId);
+                    System.out.println("Background set to " + bgId);
+                });
+            } else {
+                bg.setOpacity(0.3); // locked
+            }
+
+            backgroundsPane.getChildren().add(bg);
+        }
+
+        // --- Pets Section ---
+        int score1 = DatabaseHelper.getMathScore(Session.getCurrentUserEmail());
+        int score2 = DatabaseHelper.getLetterToImageScore(Session.getCurrentUserEmail());
+        int score3 = DatabaseHelper.getMemoryScore(Session.getCurrentUserEmail());
+        int score4 = DatabaseHelper.getOddOneOutScore(Session.getCurrentUserEmail());
+        int score5 = DatabaseHelper.getBalloonScore(Session.getCurrentUserEmail());
+        int score6 = DatabaseHelper.getTimedScore(Session.getCurrentUserEmail());
+        int avgScore = (score1 + score2 + score3 + score4 + score5 + score6) / 6;
+        int avgLevel = Math.max(1, avgScore / 20);
+
+        Label petLabel = new Label("Unlocked Pets (Based on Average Score 1-5): ");
+        Label avgScoreLabel = new Label("Your Average Score: " + avgScore);
+        avgScoreLabel.setStyle("-fx-font-size: 20px; -fx-text-fill: #444;");
+        petLabel.setStyle("-fx-font-size: 20px; -fx-text-fill: #444;");
+
+        TilePane petsPane = new TilePane();
+        petsPane.setHgap(15);
+        petsPane.setVgap(15);
+        petsPane.setPrefColumns(3);
+        petsPane.setAlignment(Pos.CENTER);
+
+
+
+        for (int i = 1; i <= 5; i++) {
+            ImageView pets = new ImageView(new Image(getClass().getResourceAsStream(
+                    "/com/example/miniminds/images/pet" + i + ".gif")));
+
+
+            pets.setFitWidth(150);
+            pets.setFitHeight(100);
+
+            if (i <= avgLevel) {
+                pets.setOpacity(1.0);
+                int petsId = i; // capture for lambda
+                pets.setOnMouseClicked(e -> {
+                    String imageName = "pet" + petsId + ".gif";
+                    System.out.println("Image Name: " + imageName);
+                    petImage.setImage(new Image(getClass().getResourceAsStream(
+                            "/com/example/miniminds/images/" + imageName)));
+
+                    // save selected background in DB
+                    DatabaseHelper.updateBadges(Session.getCurrentUserEmail(), imageName);
+                    System.out.println("Background set to " + imageName);
+                });
+            } else {
+                pets.setOpacity(0.3); // locked
+            }
+
+            petsPane.getChildren().add(pets);
+        }
+
+        rewardsBox.getChildren().addAll(title, bgLabel, backgroundsPane, petLabel, petsPane);
+
+        contentArea.getChildren().add(rewardsBox);
     }
 
     @FXML
+    private ImageView petImage;
+
+
+    @FXML
+    private VBox rewardBox;
+
+    private void applyBackground(String imageName) {
+        rewardBox.setStyle(
+                "-fx-padding: 20;" +
+                        "-fx-background-image: url('" + getClass().getResource("/com/example/miniminds/images/" + imageName).toExternalForm() + "');" +
+                        "-fx-background-size: cover;" +
+                        "-fx-background-repeat: no-repeat;" +
+                        "-fx-background-position: center;"
+        );
+    }
+
+
+    @FXML
     private void showPomodoro() {
+        clickSound.play();
+        menuImage.setImage(new Image(getClass().getResourceAsStream("/com/example/miniminds/images/pomodoroMenu.png")));
         contentArea.getChildren().clear();
 
         VBox root = new VBox(40);
@@ -483,8 +643,10 @@ public class MainController {
 
     @FXML
     private void handleLogout(ActionEvent event) throws IOException {
+        clickSound.play();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("home-view.fxml"));
         Scene scene = new Scene(loader.load());
+        scene.getStylesheets().add(getClass().getResource("mainStyle.css").toExternalForm());
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setScene(scene);
         stage.setFullScreen(true);
@@ -494,6 +656,7 @@ public class MainController {
 
     private void openGameWindow(String fxmlFile, String title, int width, int height) {
         try {
+            gameStart.play();
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
             Parent gameRoot = loader.load();
 
@@ -515,7 +678,11 @@ public class MainController {
 
             Stage gameStage = new Stage();
             gameStage.setTitle(title);
-            gameStage.setScene(new Scene(gameRoot, width, height));
+            Scene scene = new Scene(gameRoot, width, height);
+
+            scene.getStylesheets().add(getClass().getResource("/com/example/miniminds/styleGames.css").toExternalForm());
+
+            gameStage.setScene(scene);
             gameStage.show();
 
         } catch (IOException e) {
