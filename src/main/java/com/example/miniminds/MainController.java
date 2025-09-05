@@ -295,8 +295,10 @@ public class MainController {
         title.setStyle("-fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: #333;");
 
         // --- Backgrounds Section ---
-        Label bgLabel = new Label("Unlocked Backgrounds:");
+        Label bgLabel = new Label("Unlocked Backgrounds (Based on Math Score 1-5):");
+        Label mathScoreLabel = new Label("Your Math Score: " + DatabaseHelper.getMathScore(Session.getCurrentUserEmail()));
         bgLabel.setStyle("-fx-font-size: 20px; -fx-text-fill: #444;");
+        mathScoreLabel.setStyle("-fx-font-size: 20px; -fx-text-fill: #444;");
 
         TilePane backgroundsPane = new TilePane();
         backgroundsPane.setHgap(15);
@@ -333,15 +335,6 @@ public class MainController {
         }
 
         // --- Pets Section ---
-        Label petLabel = new Label("Unlocked Pets:");
-        petLabel.setStyle("-fx-font-size: 20px; -fx-text-fill: #444;");
-
-        TilePane petsPane = new TilePane();
-        petsPane.setHgap(15);
-        petsPane.setVgap(15);
-        petsPane.setPrefColumns(3);
-        petsPane.setAlignment(Pos.CENTER);
-
         int score1 = DatabaseHelper.getMathScore(Session.getCurrentUserEmail());
         int score2 = DatabaseHelper.getLetterToImageScore(Session.getCurrentUserEmail());
         int score3 = DatabaseHelper.getMemoryScore(Session.getCurrentUserEmail());
@@ -350,6 +343,19 @@ public class MainController {
         int score6 = DatabaseHelper.getTimedScore(Session.getCurrentUserEmail());
         int avgScore = (score1 + score2 + score3 + score4 + score5 + score6) / 6;
         int avgLevel = Math.max(1, avgScore / 20);
+
+        Label petLabel = new Label("Unlocked Pets (Based on Average Score 1-5): ");
+        Label avgScoreLabel = new Label("Your Average Score: " + avgScore);
+        avgScoreLabel.setStyle("-fx-font-size: 20px; -fx-text-fill: #444;");
+        petLabel.setStyle("-fx-font-size: 20px; -fx-text-fill: #444;");
+
+        TilePane petsPane = new TilePane();
+        petsPane.setHgap(15);
+        petsPane.setVgap(15);
+        petsPane.setPrefColumns(3);
+        petsPane.setAlignment(Pos.CENTER);
+
+
 
         for (int i = 1; i <= 5; i++) {
             ImageView pets = new ImageView(new Image(getClass().getResourceAsStream(
