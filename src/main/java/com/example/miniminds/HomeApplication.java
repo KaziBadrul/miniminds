@@ -11,7 +11,7 @@ public class HomeApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(HomeApplication.class.getResource("home-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), Session.getWIDTH(), Session.getHEIGHT());
+        Scene scene = new Scene(fxmlLoader.load(), 1920, 1080);
         scene.getStylesheets().add(getClass().getResource("mainStyle.css").toExternalForm());
         stage.setTitle("MiniMinds");
         stage.setMaximized(true);

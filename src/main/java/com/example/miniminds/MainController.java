@@ -18,6 +18,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.media.AudioClip;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
@@ -32,8 +33,23 @@ public class MainController {
     @FXML
     private VBox contentArea;
 
+    private AudioClip clickSound;
+    private AudioClip gameStart;
+
+    @FXML
+    private ImageView menuImage;
+
+    @FXML
+    private void initialize() {
+        // Load sounds
+        clickSound = new AudioClip(getClass().getResource("/com/example/miniminds/sounds/clickMenu.wav").toExternalForm());
+        gameStart = new AudioClip(getClass().getResource("/com/example/miniminds/sounds/gameStart.wav").toExternalForm());
+    }
+
     @FXML
     private void showDashboard() {
+        clickSound.play();
+        menuImage.setImage(new Image(getClass().getResourceAsStream("/com/example/miniminds/images/gamesMenu.png")));
         contentArea.getChildren().clear();
 
         // Title
@@ -132,6 +148,8 @@ public class MainController {
 
     @FXML
     private void showProfile() {
+        clickSound.play();
+        menuImage.setImage(new Image(getClass().getResourceAsStream("/com/example/miniminds/images/profileMenu.png")));
         contentArea.getChildren().clear();
 
         User user = DatabaseHelper.getUserByEmail(Session.getCurrentUserEmail());
@@ -246,12 +264,16 @@ public class MainController {
 
     @FXML
     private void showSettings() {
+        clickSound.play();
+        menuImage.setImage(new Image(getClass().getResourceAsStream("/com/example/miniminds/images/settingsMenu.png")));
         contentArea.getChildren().clear();
         contentArea.getChildren().add(new Text("Settings content goes here."));
     }
 
     @FXML
     private void showPomodoro() {
+        clickSound.play();
+        menuImage.setImage(new Image(getClass().getResourceAsStream("/com/example/miniminds/images/pomodoroMenu.png")));
         contentArea.getChildren().clear();
 
         VBox root = new VBox(30);
@@ -379,8 +401,10 @@ public class MainController {
 
     @FXML
     private void handleLogout(ActionEvent event) throws IOException {
+        clickSound.play();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("home-view.fxml"));
         Scene scene = new Scene(loader.load());
+        scene.getStylesheets().add(getClass().getResource("mainStyle.css").toExternalForm());
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setScene(scene);
         stage.setFullScreen(true);
@@ -390,6 +414,7 @@ public class MainController {
 
     private void openGameWindow(String fxmlFile, String title, int width, int height) {
         try {
+            gameStart.play();
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
             Parent gameRoot = loader.load();
 
@@ -411,7 +436,11 @@ public class MainController {
 
             Stage gameStage = new Stage();
             gameStage.setTitle(title);
-            gameStage.setScene(new Scene(gameRoot, width, height));
+            Scene scene = new Scene(gameRoot, width, height);
+
+            scene.getStylesheets().add(getClass().getResource("/com/example/miniminds/styleGames.css").toExternalForm());
+
+            gameStage.setScene(scene);
             gameStage.show();
 
         } catch (IOException e) {
