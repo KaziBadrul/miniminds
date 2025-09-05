@@ -24,6 +24,8 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import javafx.scene.shape.StrokeLineCap;
+import javafx.scene.effect.DropShadow;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -414,44 +416,147 @@ public class MainController {
         menuImage.setImage(new Image(getClass().getResourceAsStream("/com/example/miniminds/images/pomodoroMenu.png")));
         contentArea.getChildren().clear();
 
-        VBox root = new VBox(30);
+        VBox root = new VBox(40);
         root.setAlignment(Pos.CENTER);
-        root.setStyle("-fx-background-color: #144f21; -fx-padding: 40;");
+        root.setStyle(
+                "-fx-background-color: linear-gradient(to bottom right, #0f2027, #203a43, #2c5364);" +
+                        "-fx-padding: 50;"
+        );
 
+        // Timer text
         Text timerText = new Text("25:00");
-        timerText.setStyle("-fx-fill: white; -fx-font-size: 48px; -fx-font-weight: bold;");
+        timerText.setStyle(
+                "-fx-fill: white;" +
+                        "-fx-font-size: 64px;" +
+                        "-fx-font-weight: bold;" +
+                        "-fx-font-family: 'Segoe UI', 'Roboto', sans-serif;" +
+                        "-fx-effect: dropshadow(gaussian, rgba(0,255,200,0.6), 10, 0.5, 0, 0);"
+        );
 
-        double radius = 120;
+        // Circular progress
+        double radius = 140;
         Circle progressCircle = new Circle(radius);
         progressCircle.setFill(Color.TRANSPARENT);
-        progressCircle.setStroke(Color.web("#4CAF50"));
+        progressCircle.setStroke(Color.web("#00FFC6"));
         progressCircle.setStrokeWidth(12);
+        progressCircle.setStrokeLineCap(StrokeLineCap.ROUND);
+        progressCircle.setEffect(new DropShadow(20, Color.web("#00FFC6")));
         double circumference = 2 * Math.PI * radius;
         progressCircle.getStrokeDashArray().add(circumference);
         progressCircle.setStrokeDashOffset(0);
 
         StackPane circleStack = new StackPane(progressCircle, timerText);
 
+        // --- Glassmorphism Settings Box (Cool Design) ---
         Label workLabel = new Label("Work (min):");
         workLabel.setStyle("-fx-text-fill: white; -fx-font-size: 14px;");
+
         Spinner<Integer> workSpinner = new Spinner<>(1, 120, 25);
         workSpinner.setEditable(true);
+        workSpinner.setStyle(
+                "-fx-background-color: transparent;" +
+                        "-fx-border-color: rgba(255,255,255,0.25);" +
+                        "-fx-border-radius: 8;" +
+                        "-fx-background-radius: 8;"
+        );
+        workSpinner.getEditor().setStyle(
+                "-fx-background-color: linear-gradient(to right, #232526, #414345);" +
+                        "-fx-text-fill: #00FFC6;" +
+                        "-fx-font-size: 14px;" +
+                        "-fx-font-weight: bold;" +
+                        "-fx-background-radius: 8;" +
+                        "-fx-border-radius: 8;" +
+                        "-fx-border-color: rgba(0,255,200,0.6);" +
+                        "-fx-border-width: 1;"
+        );
 
         Label breakLabel = new Label("Break (min):");
         breakLabel.setStyle("-fx-text-fill: white; -fx-font-size: 14px;");
+
         Spinner<Integer> breakSpinner = new Spinner<>(1, 60, 5);
         breakSpinner.setEditable(true);
+        breakSpinner.setStyle(
+                "-fx-background-color: transparent;" +
+                        "-fx-border-color: rgba(255,255,255,0.25);" +
+                        "-fx-border-radius: 8;" +
+                        "-fx-background-radius: 8;"
+        );
+        breakSpinner.getEditor().setStyle(
+                "-fx-background-color: linear-gradient(to right, #141E30, #243B55);" +
+                        "-fx-text-fill: #36D1DC;" +
+                        "-fx-font-size: 14px;" +
+                        "-fx-font-weight: bold;" +
+                        "-fx-background-radius: 8;" +
+                        "-fx-border-radius: 8;" +
+                        "-fx-border-color: rgba(91,134,229,0.6);" +
+                        "-fx-border-width: 1;"
+        );
 
         Button applyBtn = new Button("✔ Apply");
-        applyBtn.setStyle("-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-size: 14px; -fx-background-radius: 15;");
+        applyBtn.setStyle(
+                "-fx-background-color: linear-gradient(to right, #36d1dc, #5b86e5);" +
+                        "-fx-text-fill: white;" +
+                        "-fx-font-size: 14px;" +
+                        "-fx-font-weight: bold;" +
+                        "-fx-background-radius: 25;" +
+                        "-fx-padding: 6 20;" +
+                        "-fx-cursor: hand;" +
+                        "-fx-effect: dropshadow(gaussian, rgba(91,134,229,0.5), 8, 0.3, 0, 0);"
+        );
+        applyBtn.setOnMouseEntered(e -> applyBtn.setStyle(
+                "-fx-background-color: linear-gradient(to right, #5b86e5, #36d1dc);" +
+                        "-fx-text-fill: white;" +
+                        "-fx-font-size: 14px;" +
+                        "-fx-font-weight: bold;" +
+                        "-fx-background-radius: 25;" +
+                        "-fx-padding: 6 20;" +
+                        "-fx-cursor: hand;" +
+                        "-fx-effect: dropshadow(gaussian, rgba(91,134,229,0.7), 10, 0.4, 0, 0);"
+        ));
+        applyBtn.setOnMouseExited(e -> applyBtn.setStyle(
+                "-fx-background-color: linear-gradient(to right, #36d1dc, #5b86e5);" +
+                        "-fx-text-fill: white;" +
+                        "-fx-font-size: 14px;" +
+                        "-fx-font-weight: bold;" +
+                        "-fx-background-radius: 25;" +
+                        "-fx-padding: 6 20;" +
+                        "-fx-cursor: hand;" +
+                        "-fx-effect: dropshadow(gaussian, rgba(91,134,229,0.5), 8, 0.3, 0, 0);"
+        ));
 
-        HBox settingsBox = new HBox(15, workLabel, workSpinner, breakLabel, breakSpinner, applyBtn);
+        HBox settingsBox = new HBox(20, workLabel, workSpinner, breakLabel, breakSpinner, applyBtn);
         settingsBox.setAlignment(Pos.CENTER);
+        settingsBox.setStyle(
+                "-fx-background-color: rgba(255,255,255,0.1);" +
+                        "-fx-background-radius: 20;" +
+                        "-fx-padding: 20;" +
+                        "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.6), 15, 0.4, 0, 4);"
+        );
 
+        // Control buttons
         Button startPauseBtn = new Button("▶ Start");
-        startPauseBtn.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 18px; -fx-background-radius: 20;");
+        startPauseBtn.setStyle(
+                "-fx-background-color: linear-gradient(to right, #00b09b, #96c93d);" +
+                        "-fx-text-fill: white;" +
+                        "-fx-font-size: 18px;" +
+                        "-fx-font-weight: bold;" +
+                        "-fx-background-radius: 25;" +
+                        "-fx-padding: 10 25;" +
+                        "-fx-cursor: hand;" +
+                        "-fx-effect: dropshadow(gaussian, rgba(0,255,200,0.4), 10, 0.3, 0, 0);"
+        );
+
         Button resetBtn = new Button("⟲ Reset");
-        resetBtn.setStyle("-fx-background-color: #FF5722; -fx-text-fill: white; -fx-font-size: 18px; -fx-background-radius: 20;");
+        resetBtn.setStyle(
+                "-fx-background-color: linear-gradient(to right, #ff512f, #dd2476);" +
+                        "-fx-text-fill: white;" +
+                        "-fx-font-size: 18px;" +
+                        "-fx-font-weight: bold;" +
+                        "-fx-background-radius: 25;" +
+                        "-fx-padding: 10 25;" +
+                        "-fx-cursor: hand;" +
+                        "-fx-effect: dropshadow(gaussian, rgba(255,80,80,0.5), 10, 0.3, 0, 0);"
+        );
 
         HBox buttonBox = new HBox(20, startPauseBtn, resetBtn);
         buttonBox.setAlignment(Pos.CENTER);
@@ -467,7 +572,6 @@ public class MainController {
         BooleanProperty running = new SimpleBooleanProperty(false);
         BooleanProperty isWorkSession = new SimpleBooleanProperty(true);
 
-        // FIX: use wrapper for timeline
         final Timeline[] timeline = new Timeline[1];
 
         Runnable createTimeline = () -> {
@@ -500,7 +604,6 @@ public class MainController {
 
         createTimeline.run();
 
-        // Start/Pause button
         startPauseBtn.setOnAction(e -> {
             if (running.get()) {
                 timeline[0].stop();
@@ -512,7 +615,6 @@ public class MainController {
             running.set(!running.get());
         });
 
-        // Reset button
         resetBtn.setOnAction(e -> {
             timeline[0].stop();
             running.set(false);
@@ -523,7 +625,6 @@ public class MainController {
             startPauseBtn.setText("▶ Start");
         });
 
-        // Apply button updates durations
         applyBtn.setOnAction(e -> {
             workDuration.set(workSpinner.getValue() * 60);
             breakDuration.set(breakSpinner.getValue() * 60);
@@ -536,6 +637,9 @@ public class MainController {
             startPauseBtn.setText("▶ Start");
         });
     }
+
+
+
 
     @FXML
     private void handleLogout(ActionEvent event) throws IOException {
